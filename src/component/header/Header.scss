@@ -1,0 +1,17 @@
+@import '../../general';
+
+.Header {
+  background-color: var(--color-header-background);
+  border-bottom: var(--color-accent) 2px solid;
+  padding: {
+    top: 35px;
+    bottom: 35px;
+  }
+  .container {
+    width: 80%;
+    margin: {
+      left: auto;
+      right: auto;
+    }
+  }
+}
