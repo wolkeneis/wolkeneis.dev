@@ -1,9 +1,8 @@
-import { Clipboard } from '@capacitor/clipboard';
-import { Dialog } from '@capacitor/dialog';
 import PropTypes from "prop-types";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { createClient, fetchClient, fetchClients, regenerateSecret, updateClientName, updateRedirectUri } from "../../../logic/developer";
+import { alert, prompt, writeClipboard } from "../../../logic/utils";
 import { fetchProfile } from "../../../logic/profile";
 import Loader from "../../Loader";
 import "./DeveloperSettings.scss";
@@ -46,14 +45,14 @@ const DeveloperSettings = () => {
             setSecrets(newSecrets);
             setClients(fetchClients());
           } else {
-            Dialog.alert({
+            alert({
               title: "An error occurred",
               message: "Please try again later"
             });
           }
         });
     } else {
-      Dialog.alert({
+      alert({
         title: "An error occurred",
         message: "Please try again later"
       });
@@ -70,7 +69,7 @@ const DeveloperSettings = () => {
           newSecrets[client.id] = client.secret;
           setSecrets(newSecrets);
         } else {
-          Dialog.alert({
+          alert({
             title: "An error occurred",
             message: "Please try again later"
           });
@@ -133,7 +132,7 @@ const Client = ({ clientId, generateNewSecret, secret }) => {
   }, [clientId]);
 
   const editName = () => {
-    Dialog.prompt({
+    prompt({
       title: 'Edit Client Name',
       message: `Enter the new Name`,
       inputPlaceholder: "Name...",
@@ -144,7 +143,7 @@ const Client = ({ clientId, generateNewSecret, secret }) => {
           updateClientName(clientId, value)
             .then(() => setClient(fetchClient(clientId)))
             .catch(() =>
-              Dialog.alert({
+              alert({
                 title: "An error occurred",
                 message: "Please try again later"
               }));
@@ -153,7 +152,7 @@ const Client = ({ clientId, generateNewSecret, secret }) => {
   }
 
   const editRedirectUri = () => {
-    Dialog.prompt({
+    prompt({
       title: 'Edit Client Redirect URI',
       message: `Enter the new Redirect URI`,
       inputPlaceholder: "Redirect URI...",
@@ -164,7 +163,7 @@ const Client = ({ clientId, generateNewSecret, secret }) => {
           updateRedirectUri(clientId, value)
             .then(() => setClient(fetchClient(clientId)))
             .catch(() =>
-              Dialog.alert({
+              alert({
                 title: "An error occurred",
                 message: "Please try again later"
               }));
@@ -173,9 +172,7 @@ const Client = ({ clientId, generateNewSecret, secret }) => {
   }
 
   const copySecret = () => {
-    Clipboard.write({
-      string: secret
-    });
+    writeClipboard(secret);
   }
 
   return (

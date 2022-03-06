@@ -18,15 +18,5 @@ const Tea = () => {
   );
 }
 
-const PlaylistPreviewSkeleton = () => {
-  return (
-    <div className="PlaylistPreviewSkeleton">
-      <div className="image-skeleton" />
-      <div className="span-skeleton" />
-    </div>
-  )
-}
-
 export default Tea;
-export { PlaylistPreviewSkeleton };
 

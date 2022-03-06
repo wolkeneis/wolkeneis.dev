@@ -1,22 +1,19 @@
-import { Capacitor } from "@capacitor/core";
-import { Device } from "@capacitor/device";
-import { Storage } from "@capacitor/storage";
 import { lazy, Suspense, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.scss";
 import Loader from "./component/Loader";
-import QueryRedirect from "./component/QueryRedirect";
-import { addContact } from "./logic/contacts";
+import AddContactHandler from "./component/routes/AddContactHandler";
+import QueryRedirect from "./component/routes/QueryRedirect";
 import "./logic/polyfills";
-import { initializeKeys } from "./logic/signal";
-import { selectTheme, setMobile, setNative } from "./redux/interfaceSlice";
+import { os } from "./logic/utils";
+import { selectTheme, setMobile } from "./redux/interfaceSlice";
 
 const Content = lazy(() => import("./component/content/Content"));
 const Footer = lazy(() => import("./component/footer/Footer"));
 const Header = lazy(() => import("./component/header/Header"));
 const Authorize = lazy(() => import("./component/settings/pages/Authorize"));
+
 
 function App() {
   const mobile = useSelector(state => state.interface.mobile);
@@ -24,23 +21,17 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const native = Capacitor.isNativePlatform();
-    dispatch(setNative(native));
-    initializeKeys(native);
-    Device.getInfo().then(info => {
-      const mobile = info.operatingSystem === "ios" || info.operatingSystem === "android";
-      dispatch(setMobile(mobile));
-    });
-    Storage.get({ key: "theme" }).then(theme => {
-      if (theme.value) {
-        dispatch(selectTheme(theme.value));
-      }
-    });
+    const operatingSystem = os();
+    dispatch(setMobile(operatingSystem === "ios" || operatingSystem === "android"));
+    const storedTheme = localStorage.getItem("theme");
+    if (storedTheme) {
+      dispatch(selectTheme(storedTheme));
+    }
   }, [dispatch]);
 
   useEffect(() => {
     if (theme) {
-      Storage.set({ key: "theme", value: theme });
+      localStorage.setItem("theme", theme);
     }
   }, [theme]);
 
@@ -73,23 +64,6 @@ function App() {
   );
 }
 
-const AddContactHandler = ({ children, ...props }) => {
-  const { userId } = useParams();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (userId) {
-      addContact(userId)
-        .then(() => navigate("/settings/contacts"))
-        .catch(() => navigate("/settings/contacts"));
-    }
-  }, [navigate, userId]);
-
-  return (
-    <>
-      {children}
-    </>
-  );
-}
 
 export default App;
