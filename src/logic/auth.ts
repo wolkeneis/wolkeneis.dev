@@ -1,24 +1,28 @@
 import {
   AuthProvider,
   EmailAuthProvider,
-  getRedirectResult,
   GithubAuthProvider,
   GoogleAuthProvider,
+  inMemoryPersistence,
   linkWithCredential,
   linkWithRedirect,
-  Persistence,
+  setPersistence,
+  signInWithCustomToken,
   signInWithRedirect,
-  User,
-  UserCredential
+  User
 } from "firebase/auth";
 import { auth } from "./firebase";
 
-auth.setPersistence("NONE" as unknown as Persistence);
+setPersistence(auth, inMemoryPersistence);
 
 const googleProvider = new GoogleAuthProvider();
 const githubProvider = new GithubAuthProvider();
 
-export function _signIn(provider: AuthProvider): Promise<boolean> {
+export async function customTokenSignIn(token: string): Promise<void> {
+  await signInWithCustomToken(auth, token);
+}
+
+function _signIn(provider: AuthProvider): Promise<boolean> {
   return signInWithRedirect(auth, provider)
     .then(() => true)
     .catch(() => false);
@@ -62,21 +66,32 @@ function _linkWithRedirect(
     .catch(() => false);
 }
 
-getRedirectResult(auth)
-  .then((result: UserCredential | null) => {
-    console.log(result);
+export async function idToken(): Promise<string | undefined> {
+  return await auth.currentUser?.getIdToken();
+}
 
-    if (!result) {
-      return; // Error
-    }
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    if (credential) {
-      // Accounts successfully linked.
-      const user = result.user;
-      // ...
-    }
-  })
-  .catch((error) => {
-    // Handle Errors here.
-    // ...
-  });
+export async function requestSessionCookie(
+  idToken: string,
+  csrfToken: string
+): Promise<boolean> {
+  console.log(idToken);
+  return fetch(
+    new Request(
+      `${
+        process.env.REACT_APP_MOOS_BACKEND ??
+        "https://trockenmoos.wolkeneis.dev"
+      }/cookie/request`,
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "CSRF-Token": csrfToken
+        },
+        body: JSON.stringify({
+          token: idToken
+        })
+      }
+    )
+  ).then((response) => response.ok);
+}

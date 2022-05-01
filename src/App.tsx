@@ -2,11 +2,14 @@ import { Box } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
+import { Route, Routes } from "react-router-dom";
+import Content from "./components/content/Content";
+import SessionHandler from "./components/endpoints/Session";
 import LinkBehavior from "./components/LinkBehavior";
+import Redirects from "./components/Redirects";
+import "./logic/firebase";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { selectTheme } from "./redux/interfaceSlice";
-import "./logic/firebase";
-import Header from "./components/header/Header";
 
 const darkTheme = createTheme({
   palette: {
@@ -61,7 +64,11 @@ function App() {
     <ThemeProvider theme={muiTheme}>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <Header />
+        <Routes>
+          <Route element={<Redirects />} path="/redirect/*" />
+          <Route element={<Content />} path="*" />
+          <Route element={<SessionHandler />} path="/session" />
+        </Routes>
       </Box>
     </ThemeProvider>
   );
