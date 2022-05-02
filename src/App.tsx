@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Content from "./components/content/Content";
-import SessionHandler from "./components/endpoints/Session";
+import Endpoints from "./components/Endpoints";
 import LinkBehavior from "./components/LinkBehavior";
 import Redirects from "./components/Redirects";
 import "./logic/firebase";
@@ -67,7 +67,7 @@ function App() {
         <Routes>
           <Route element={<Redirects />} path="/redirect/*" />
           <Route element={<Content />} path="*" />
-          <Route element={<SessionHandler />} path="/session" />
+          <Route element={<Endpoints />} path="/endpoints/:endpoint" />
         </Routes>
       </Box>
     </ThemeProvider>

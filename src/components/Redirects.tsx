@@ -15,7 +15,7 @@ const SessionRedirect = () => {
   const location = useLocation();
 
   useEffect(() => {
-    navigate(`/session${location.search}`, {
+    navigate(`/endpoints/session${location.search}`, {
       replace: true
     });
   }, []);

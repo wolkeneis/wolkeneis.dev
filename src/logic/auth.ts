@@ -74,7 +74,6 @@ export async function requestSessionCookie(
   idToken: string,
   csrfToken: string
 ): Promise<boolean> {
-  console.log(idToken);
   return fetch(
     new Request(
       `${
