@@ -1,4 +1,4 @@
-import { Logout, OpenInNew } from "@mui/icons-material";
+import { Logout, Settings } from "@mui/icons-material";
 import {
   Avatar,
   Button,
@@ -9,16 +9,17 @@ import {
   Menu,
   MenuItem
 } from "@mui/material";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
+import { updateProfileInformation } from "../../logic/profile";
 import { useAppSelector } from "../../redux/hooks";
 
 const Profile = () => {
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
-  const profile = useAppSelector((state) => state.social.profile);
+  const profile = useAppSelector((state) => state.session.profile);
 
-  //useEffect(() => {
-  //  fetchSelfProfile().then((profile) => dispatch(setProfile(profile)));
-  //}, []);
+  useEffect(() => {
+    updateProfileInformation();
+  }, []);
 
   const handleClick: MouseEventHandler<HTMLDivElement> = (event) => {
     setAnchor(event.currentTarget);
@@ -35,10 +36,7 @@ const Profile = () => {
       ) : (
         <>
           {profile === null ? (
-            <Button
-              component="a"
-              href={`${process.env.REACT_APP_BACKEND}/authenticate`}
-            >
+            <Button component="a" href={"/redirect/login"}>
               Login
             </Button>
           ) : (
@@ -48,7 +46,7 @@ const Profile = () => {
                   alt={profile.username}
                   id="avatar-button"
                   onClick={handleClick}
-                  src={profile.avatar}
+                  src={profile.avatar as string}
                   sx={{ cursor: "pointer" }}
                 />
               ) : (
@@ -70,20 +68,14 @@ const Profile = () => {
                 open={anchor !== null}
                 sx={{ mt: ".5em" }}
               >
-                <MenuItem
-                  component="a"
-                  href={`${process.env.REACT_APP_BACKEND}/redirect/profile`}
-                >
+                <MenuItem component="a" href={"/redirect/profile"}>
                   <ListItemIcon>
-                    <OpenInNew fontSize="small" />
+                    <Settings fontSize="small" />
                   </ListItemIcon>
                   <ListItemText primary="Account" />
                 </MenuItem>
                 <Divider />
-                <MenuItem
-                  component="a"
-                  href={`${process.env.REACT_APP_BACKEND}/logout`}
-                >
+                <MenuItem component="a" href={"/redirect/logout"}>
                   <ListItemIcon>
                     <Logout fontSize="small" />
                   </ListItemIcon>

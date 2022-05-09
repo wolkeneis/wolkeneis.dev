@@ -69,28 +69,3 @@ function _linkWithRedirect(
 export async function idToken(): Promise<string | undefined> {
   return await auth.currentUser?.getIdToken();
 }
-
-export async function requestSessionCookie(
-  idToken: string,
-  csrfToken: string
-): Promise<boolean> {
-  return fetch(
-    new Request(
-      `${
-        process.env.REACT_APP_MOOS_BACKEND ??
-        "https://trockenmoos.wolkeneis.dev"
-      }/cookie/request`,
-      {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-          "CSRF-Token": csrfToken
-        },
-        body: JSON.stringify({
-          token: idToken
-        })
-      }
-    )
-  ).then((response) => response.ok);
-}
