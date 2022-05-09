@@ -53,6 +53,9 @@ async function _csrfFetch(
     ...init
   });
   if (response.status === 403 && retry) {
+    store.dispatch(
+      setCSRFToken((await (await requestCSRFToken()).json())._csrf)
+    );
     return _csrfFetch(endpoint, body, init, false);
   }
   return response;
