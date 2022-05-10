@@ -1,12 +1,8 @@
 import {
-  Abc as AlphabetIcon,
-  Assignment as ActionsIcon,
-  Book as DictionaryIcon,
+  Apps as AppsIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
-  LibraryBooks as GrammarIcon,
-  Timeline as ContributionsIcon,
-  Translate as TranslatorIcon
+  Description as DescriptionIcon
 } from "@mui/icons-material";
 import {
   Divider,
@@ -16,10 +12,12 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  ListSubheader,
   styled,
   Typography,
   useTheme
 } from "@mui/material";
+import packageJson from "../../../package.json";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { toggleDrawer } from "../../redux/interfaceSlice";
 import LinkBehavior from "../LinkBehavior";
@@ -55,44 +53,21 @@ const Navigator = () => {
       </DrawerHeader>
       <Divider />
       <List>
-        <ListItem button component={LinkBehavior} href="/alphabet">
+        <ListItem button component={LinkBehavior} href="/apps">
           <ListItemIcon>
-            <AlphabetIcon />
+            <AppsIcon />
           </ListItemIcon>
-          <ListItemText primary="Alphabet" />
+          <ListItemText primary="Apps" />
         </ListItem>
-        <ListItem button component={LinkBehavior} href="/grammar">
+        <ListSubheader>Developer</ListSubheader>
+        <ListItem button component={LinkBehavior} href="/documentation">
           <ListItemIcon>
-            <GrammarIcon />
+            <DescriptionIcon />
           </ListItemIcon>
-          <ListItemText primary="Grammar" />
-        </ListItem>
-        <ListItem button component={LinkBehavior} href="/dictionary">
-          <ListItemIcon>
-            <DictionaryIcon />
-          </ListItemIcon>
-          <ListItemText primary="Dictionary" />
-        </ListItem>
-        <ListItem button component={LinkBehavior} href="/translate">
-          <ListItemIcon>
-            <TranslatorIcon />
-          </ListItemIcon>
-          <ListItemText primary="Translator" />
-        </ListItem>
-        <Divider />
-        <ListItem button component={LinkBehavior} href="/actions">
-          <ListItemIcon>
-            <ActionsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Your Actions" />
-        </ListItem>
-        <ListItem button component={LinkBehavior} href="/contributions">
-          <ListItemIcon>
-            <ContributionsIcon />
-          </ListItemIcon>
-          <ListItemText primary="Your Contributions" />
+          <ListItemText primary="API Documentation" />
         </ListItem>
       </List>
+      <Divider />
       <Typography
         sx={{
           mb: "1em",
@@ -103,7 +78,7 @@ const Navigator = () => {
       >
         Wolkeneis, Copyright © 2022
         <br />
-        wolkeneis.net Version 0.1.0
+        wolkeneis.net Version {packageJson.version}
       </Typography>
     </Drawer>
   );
