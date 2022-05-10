@@ -47,10 +47,11 @@ async function _csrfFetch(
     store.dispatch(setCSRFToken(token));
   }
   const response = await _fetch(endpoint, body, {
+    ...init,
     headers: {
-      "CSRF-Token": token ?? ""
+      "CSRF-Token": token ?? "",
+      ...init?.headers
     },
-    ...init
   });
   if (response.status === 403 && retry) {
     store.dispatch(
@@ -73,11 +74,12 @@ async function _fetch(
     {
       method: "POST",
       credentials: "include",
-      headers: {
-        "Content-Type": "application/json"
-      },
       body: body ? JSON.stringify(body) : undefined,
-      ...init
+      ...init,
+      headers: {
+        "Content-Type": "application/json",
+        ...init?.headers
+      }
     }
   );
 }
