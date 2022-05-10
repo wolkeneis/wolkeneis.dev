@@ -10,6 +10,14 @@ export async function fetchProfile(): Promise<
   );
 }
 
+export async function patchProfile(
+  parameters: v1.operations["patch-profile"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return _csrfFetch("/session", parameters, { method: "PATCH" }).then(
+    (response) => response.ok
+  );
+}
+
 export async function requestSessionCookie(idToken: string): Promise<boolean> {
   const body: v1.operations["request-session"]["requestBody"]["content"]["application/json"] =
     {
