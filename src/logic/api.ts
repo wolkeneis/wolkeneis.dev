@@ -51,7 +51,7 @@ async function _csrfFetch(
     headers: {
       "CSRF-Token": token ?? "",
       ...init?.headers
-    },
+    }
   });
   if (response.status === 403 && retry) {
     store.dispatch(
