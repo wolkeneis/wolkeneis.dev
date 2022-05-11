@@ -31,6 +31,11 @@ const Profile = () => {
     setAnchor(null);
   };
 
+  const handleAccountClick = () => {
+    navigate("/profile");
+    setAnchor(null);
+  };
+
   return (
     <>
       {profile === undefined ? (
@@ -68,7 +73,7 @@ const Profile = () => {
                 open={anchor !== null}
                 sx={{ mt: ".5em" }}
               >
-                <MenuItem onClick={() => navigate("/profile")}>
+                <MenuItem onClick={handleAccountClick}>
                   <ListItemIcon>
                     <Settings fontSize="small" />
                   </ListItemIcon>

@@ -6,7 +6,7 @@ const Redirects = () => {
     <Routes>
       <Route element={<SessionRedirect />} path="/session"></Route>
       <Route element={<ProfileRedirect />} path="/profile"></Route>
-      <Route element={<ProfileRedirect />} path="/login"></Route>
+      <Route element={<LoginRedirect />} path="/login"></Route>
       <Route element={<LogoutRedirect />} path="/logout"></Route>
     </Routes>
   );
@@ -30,6 +30,18 @@ const ProfileRedirect = () => {
 
   useEffect(() => {
     navigate("/profile", {
+      replace: true
+    });
+  }, []);
+
+  return null;
+};
+
+const LoginRedirect = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate("/login", {
       replace: true
     });
   }, []);
