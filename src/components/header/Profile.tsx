@@ -10,12 +10,14 @@ import {
   MenuItem
 } from "@mui/material";
 import { MouseEventHandler, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { updateProfileInformation } from "../../logic/profile";
 import { useAppSelector } from "../../redux/hooks";
 
 const Profile = () => {
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
   const profile = useAppSelector((state) => state.session.profile);
+  const navigate = useNavigate();
 
   useEffect(() => {
     updateProfileInformation();
@@ -36,9 +38,7 @@ const Profile = () => {
       ) : (
         <>
           {profile === null ? (
-            <Button component="a" href={"/redirect/login"}>
-              Login
-            </Button>
+            <Button onClick={() => navigate("/login")}>Login</Button>
           ) : (
             <>
               {profile.avatar ? (
@@ -68,7 +68,7 @@ const Profile = () => {
                 open={anchor !== null}
                 sx={{ mt: ".5em" }}
               >
-                <MenuItem component="a" href={"/redirect/profile"}>
+                <MenuItem onClick={() => navigate("/profile")}>
                   <ListItemIcon>
                     <Settings fontSize="small" />
                   </ListItemIcon>
