@@ -1,5 +1,5 @@
 const PrivacyPolicy = () => {
-  return null;
+  return <></>;
 };
 
 export default PrivacyPolicy;

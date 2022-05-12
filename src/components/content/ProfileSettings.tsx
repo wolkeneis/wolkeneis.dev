@@ -1,5 +1,5 @@
 const ProfileSettings = () => {
-  return null;
+  return <></>;
 };
 
 export default ProfileSettings;

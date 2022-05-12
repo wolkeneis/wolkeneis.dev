@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
@@ -62,14 +61,12 @@ function App() {
 
   return (
     <ThemeProvider theme={muiTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <Routes>
-          <Route element={<Redirects />} path="/redirect/*" />
-          <Route element={<Content />} path="*" />
-          <Route element={<Endpoints />} path="/endpoints/:endpoint" />
-        </Routes>
-      </Box>
+      <CssBaseline />
+      <Routes>
+        <Route element={<Redirects />} path="/redirect/*" />
+        <Route element={<Content />} path="*" />
+        <Route element={<Endpoints />} path="/endpoints/:endpoint" />
+      </Routes>
     </ThemeProvider>
   );
 }
