@@ -1,4 +1,3 @@
-import { width } from ".pnpm/@mui+system@5.7.0_2f7y4c3dlygqpuszd3d43oslwi/node_modules/@mui/system";
 import { Google as GoogleIcon } from "@mui/icons-material";
 import {
   Box,
