@@ -25,7 +25,7 @@ const LoginPage = () => {
         margin: "auto"
       }}
     >
-      <Card sx={{ width: "345px" }}>
+      <Card sx={{ width: "345px", marginTop: "-35%" }}>
         <CardHeader title="Login" />
         <CardMedia
           alt="Random Image"
