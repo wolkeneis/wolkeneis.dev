@@ -31,6 +31,8 @@ const Main = styled("main", {
   drawerOpen: boolean;
   drawerWidth: number;
 }>(({ theme, drawerOpen, drawerWidth }) => ({
+  display: "flex",
+  flexDirection: "column",
   flexGrow: 1,
   padding: theme.spacing(3),
   transition: theme.transitions.create("margin", {
