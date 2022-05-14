@@ -24,6 +24,7 @@ specifiers:
   lint-staged: ^12.4.1
   moos-api: ^0.0.1
   prettier: 2.6.2
+  qrcode.react: ^3.0.1
   react: ^18.1.0
   react-dom: ^18.1.0
   react-redux: ^8.0.1
@@ -42,6 +43,7 @@ dependencies:
   '@reduxjs/toolkit': 1.8.1_j24pcqpkbsj43woxscsovlj4au
   firebase: 9.8.1
   moos-api: 0.0.1
+  qrcode.react: 3.0.1_react@18.1.0
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
   react-redux: 8.0.1_e6senhi6gkhdouiqizr2s56gsi
@@ -8832,6 +8834,14 @@ packages:
   /q/1.5.1:
     resolution: {integrity: sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=}
     engines: {node: '>=0.6.0', teleport: '>=0.2.0'}
+    dev: false
+
+  /qrcode.react/3.0.1_react@18.1.0:
+    resolution: {integrity: sha512-uCNm16ClMCrdM2R20c/zqmdwHcbMQf3K7ey39EiK/UgEKbqWeM0iH2QxW3iDVFzjQKFzH23ICgOyG4gNsJ0/gw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.1.0
     dev: false
 
   /qs/6.10.3:
