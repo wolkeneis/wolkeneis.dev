@@ -8,7 +8,7 @@ interface InterfaceState {
 
 const initialState: InterfaceState = {
   theme: "dark-theme",
-  drawerOpen: false,
+  drawerOpen: true,
   drawerWidth: 240
 };
 

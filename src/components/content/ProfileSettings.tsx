@@ -107,7 +107,8 @@ const ProfileSettings = () => {
                   <Button
                     component="a"
                     href={"/redirect/logout"}
-                    startIcon={<LogoutIcon />}
+                    size="small"
+                    startIcon={<LogoutIcon fontSize="small" />}
                   >
                     Logout
                   </Button>
