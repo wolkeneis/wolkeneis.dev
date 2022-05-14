@@ -2,7 +2,8 @@ import {
   Apps as AppsIcon,
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
-  Description as DescriptionIcon
+  Description as DescriptionIcon,
+  PrivacyTip as PrivacyTipIcon
 } from "@mui/icons-material";
 import {
   Divider,
@@ -59,6 +60,12 @@ const Navigator = () => {
           </ListItemIcon>
           <ListItemText primary="Apps" />
         </ListItem>
+        <ListItem button component={LinkBehavior} href="/privacy">
+          <ListItemIcon>
+            <PrivacyTipIcon />
+          </ListItemIcon>
+          <ListItemText primary="Privacy Policy" />
+        </ListItem>
         <ListSubheader>Developer</ListSubheader>
         <ListItem button component={LinkBehavior} href="/documentation">
           <ListItemIcon>
@@ -78,7 +85,7 @@ const Navigator = () => {
       >
         Wolkeneis, Copyright © 2022
         <br />
-        wolkeneis.net Version {packageJson.version}
+        Version {packageJson.version}
       </Typography>
     </Drawer>
   );
