@@ -53,7 +53,8 @@ const ProfileSettings = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center"
+        alignItems: "center",
+        marginTop: "32px"
       }}
     >
       {profile === undefined ? (
@@ -62,7 +63,7 @@ const ProfileSettings = () => {
         <>
           {profile !== null ? (
             <>
-              <Card>
+              <Card sx={{ width: 365 }}>
                 <CardHeader
                   avatar={
                     <>
