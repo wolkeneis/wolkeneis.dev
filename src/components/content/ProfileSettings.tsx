@@ -10,10 +10,8 @@ import {
   CardMedia,
   CircularProgress,
   FormControlLabel,
-  styled,
   Switch
 } from "@mui/material";
-import QRCode from "qrcode.react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { patchProfile } from "../../logic/api";
@@ -103,13 +101,6 @@ const ProfileSettings = () => {
                     }
                     label="Private Account"
                   />
-                  <QRCodeBox>
-                    <QRCode
-                      renderAs="svg"
-                      size={160}
-                      value={`${window.location.origin}/addcontact/${profile?.uid}`}
-                    />
-                  </QRCodeBox>
                 </CardContent>
                 <CardActions>
                   <Button
@@ -128,17 +119,5 @@ const ProfileSettings = () => {
     </Box>
   );
 };
-
-const QRCodeBox = styled("div")({
-  backgroundColor: "white",
-  borderRadius: 5,
-  height: 180,
-  marginBottom: 10,
-  marginLeft: "auto",
-  marginRight: "auto",
-  marginTop: 10,
-  padding: 10,
-  width: 180
-});
 
 export default ProfileSettings;
