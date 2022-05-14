@@ -13,7 +13,7 @@ export async function fetchProfile(): Promise<
 export async function patchProfile(
   parameters: v1.operations["patch-profile"]["requestBody"]["content"]["application/json"]
 ): Promise<boolean> {
-  return _csrfFetch("/session", parameters, { method: "PATCH" }).then(
+  return _csrfFetch("/profile", parameters, { method: "PATCH" }).then(
     (response) => response.ok
   );
 }
