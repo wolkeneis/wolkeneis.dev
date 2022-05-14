@@ -22,7 +22,7 @@ specifiers:
   firebase: ^9.8.1
   husky: ^8.0.1
   lint-staged: ^12.4.1
-  moos-api: ^0.0.1
+  moos-api: ^0.0.3
   prettier: 2.6.2
   qrcode.react: ^3.0.1
   react: ^18.1.0
@@ -42,7 +42,7 @@ dependencies:
   '@mui/material': 5.7.0_4xriuibr7qayay6mzcpq5f43me
   '@reduxjs/toolkit': 1.8.1_j24pcqpkbsj43woxscsovlj4au
   firebase: 9.8.1
-  moos-api: 0.0.1
+  moos-api: 0.0.3
   qrcode.react: 3.0.1_react@18.1.0
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
@@ -7541,8 +7541,8 @@ packages:
       minimist: 1.2.6
     dev: false
 
-  /moos-api/0.0.1:
-    resolution: {integrity: sha512-O/vyMowfQ4QoGtxRMzvChG9wymv9mtd+GuV4xT1GmGALGlpyA/i81M0nuqYE/khKGMVF9EWUCCjSNyGirvyHeQ==}
+  /moos-api/0.0.3:
+    resolution: {integrity: sha512-Kv+so2pTRbupTs/gbFDAi4tqHOBDBtEcQ9gigQbuHpw+1nUiK4drC3yOCBQzTzERvgvxhqQURd+En3K3rQC+SQ==}
     dev: false
 
   /ms/2.0.0:
