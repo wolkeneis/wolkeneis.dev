@@ -2,6 +2,7 @@ import { styled } from "@mui/material";
 import { Route, Routes } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import Header from "../header/Header";
+import Authorization from "./AuthorizePage";
 import LoginPage from "./LoginPage";
 import PrivacyPolicy from "./PrivacyPolicy";
 import ProfileSettings from "./ProfileSettings";
@@ -18,6 +19,7 @@ const Content = () => {
         <Routes>
           <Route element={<ProfileSettings />} path="/profile" />
           <Route element={<LoginPage />} path="/login" />
+          <Route element={<Authorization />} path="/authorize" />
           <Route element={<PrivacyPolicy />} path="/privacy" />
         </Routes>
       </Main>

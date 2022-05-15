@@ -3,7 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@emotion/react': ^11.9.0
   '@emotion/styled': ^11.8.1
-  '@fontsource/roboto': ^4.5.5
+  '@fontsource/roboto': ^4.5.7
   '@mui/icons-material': ^5.6.2
   '@mui/material': ^5.7.0
   '@reduxjs/toolkit': ^1.8.1
@@ -22,7 +22,7 @@ specifiers:
   firebase: ^9.8.1
   husky: ^8.0.1
   lint-staged: ^12.4.1
-  moos-api: ^0.0.3
+  moos-api: ^0.1.0
   prettier: 2.6.2
   qrcode.react: ^3.0.1
   react: ^18.1.0
@@ -37,12 +37,12 @@ specifiers:
 dependencies:
   '@emotion/react': 11.9.0_7cpxmzzodpxnolj5zcc5cr63ji
   '@emotion/styled': 11.8.1_ycz2ostpb5cpb2s3izz5qyhrbm
-  '@fontsource/roboto': 4.5.5
+  '@fontsource/roboto': 4.5.7
   '@mui/icons-material': 5.6.2_gs4txqvbg6wy3z27cqyhc6rvwe
   '@mui/material': 5.7.0_4xriuibr7qayay6mzcpq5f43me
   '@reduxjs/toolkit': 1.8.1_j24pcqpkbsj43woxscsovlj4au
   firebase: 9.8.1
-  moos-api: 0.0.3
+  moos-api: 0.1.0
   qrcode.react: 3.0.1_react@18.1.0
   react: 18.1.0
   react-dom: 18.1.0_react@18.1.0
@@ -2118,8 +2118,8 @@ packages:
     resolution: {integrity: sha512-9FqhNjKQWpQ3fGnSOCovHOm+yhhiorKEqYLAfd525jWavunDJcx8rOW6i6ozAh+FbwcYMkL7b+3j4UR/30MpoQ==}
     dev: false
 
-  /@fontsource/roboto/4.5.5:
-    resolution: {integrity: sha512-Pe1p+gAO6K0aLxBXlLoJRHVx352tVc/v/7DOnvM3t+FYXb+KUga9aCD1NpnDfd0kKnWXqrZyAXguyyFWDDuphw==}
+  /@fontsource/roboto/4.5.7:
+    resolution: {integrity: sha512-m57UMER23Mk6Drg9OjtHW1Y+0KPGyZfE5XJoPTOsLARLar6013kJj4X2HICt+iFLJqIgTahA/QAvSn9lwF1EEw==}
     dev: false
 
   /@grpc/grpc-js/1.6.7:
@@ -7541,8 +7541,8 @@ packages:
       minimist: 1.2.6
     dev: false
 
-  /moos-api/0.0.3:
-    resolution: {integrity: sha512-Kv+so2pTRbupTs/gbFDAi4tqHOBDBtEcQ9gigQbuHpw+1nUiK4drC3yOCBQzTzERvgvxhqQURd+En3K3rQC+SQ==}
+  /moos-api/0.1.0:
+    resolution: {integrity: sha512-ReSiqDPDDwmhxC60Aw/mKQVgMy4FYSAls9eWftEASxRP0v9ppzYY8q8NNqzrMmV2qqQZkOMtCOY38TdeqAeMrQ==}
     dev: false
 
   /ms/2.0.0:

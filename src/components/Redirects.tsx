@@ -5,6 +5,7 @@ const Redirects = () => {
   return (
     <Routes>
       <Route element={<SessionRedirect />} path="/session"></Route>
+      <Route element={<AuthorizeRedirect />} path="/authorize"></Route>
       <Route element={<ProfileRedirect />} path="/profile"></Route>
       <Route element={<LoginRedirect />} path="/login"></Route>
       <Route element={<LogoutRedirect />} path="/logout"></Route>
@@ -18,6 +19,19 @@ const SessionRedirect = () => {
 
   useEffect(() => {
     navigate(`/endpoints/session${location.search}`, {
+      replace: true
+    });
+  }, []);
+
+  return null;
+};
+
+const AuthorizeRedirect = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    navigate(`/authorize${location.search}`, {
       replace: true
     });
   }, []);
