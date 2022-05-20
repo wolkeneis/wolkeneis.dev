@@ -2,9 +2,7 @@ import { v1 } from "moos-api";
 import { setCSRFToken } from "../redux/sessionSlice";
 import { store } from "../redux/store";
 
-export async function fetchProfile(): Promise<
-  v1.components["schemas"]["UserProfile"] | null
-> {
+export async function fetchProfile(): Promise<v1.UserProfile | null> {
   return _csrfFetch("/profile", undefined, { method: "POST" }).then(
     (response) => response.json()
   );

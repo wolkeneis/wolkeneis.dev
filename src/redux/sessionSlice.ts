@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { v1 } from "moos-api";
 
 interface SessionState {
-  profile?: v1.components["schemas"]["UserProfile"] | null;
+  profile?: v1.UserProfile | null;
   csrfToken?: string;
 }
 
@@ -15,10 +15,7 @@ export const sessionSlice = createSlice({
   name: "session",
   initialState,
   reducers: {
-    setProfile: (
-      state,
-      action: PayloadAction<v1.components["schemas"]["UserProfile"] | null>
-    ) => {
+    setProfile: (state, action: PayloadAction<v1.UserProfile | null>) => {
       state.profile = action.payload;
     },
 
