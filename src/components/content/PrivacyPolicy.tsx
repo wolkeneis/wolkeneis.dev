@@ -5,7 +5,11 @@ import { analytics } from "../../logic/firebase";
 const PrivacyPolicy = () => {
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}
     >
       <Paper sx={{ padding: "25px", maxWidth: "850px" }}>
         <h1>Datenschutzerklärung</h1>
@@ -62,6 +66,7 @@ const PrivacyPolicy = () => {
           <Link
             href="https://www.bfdi.bund.de/DE/Service/Anschriften/Laender/Laender-node.html"
             rel="noopener nofollow noreferrer"
+            sx={{ wordBreak: "break-all" }}
             target="_blank"
           >
             https://www.bfdi.bund.de/DE/Service/Anschriften/Laender/Laender-node.html
@@ -153,6 +158,7 @@ const PrivacyPolicy = () => {
             <Link
               href="https://support.mozilla.org/de/kb/cookies-loeschen-daten-von-websites-entfernen"
               rel="nofollow noopener noreferrer"
+              sx={{ wordBreak: "break-all" }}
               target="_blank"
             >
               https://support.mozilla.org/de/kb/cookies-loeschen-daten-von-websites-entfernen
@@ -163,6 +169,7 @@ const PrivacyPolicy = () => {
             <Link
               href="https://support.microsoft.com/de-de/help/17442/windows-internet-explorer-delete-manage-cookies"
               rel="nofollow noopener noreferrer"
+              sx={{ wordBreak: "break-all" }}
               target="_blank"
             >
               https://support.microsoft.com/de-de/help/17442/windows-internet-explorer-delete-manage-cookies
@@ -173,6 +180,7 @@ const PrivacyPolicy = () => {
             <Link
               href="https://support.google.com/accounts/answer/61416?hl=de"
               rel="nofollow noopener noreferrer"
+              sx={{ wordBreak: "break-all" }}
               target="_blank"
             >
               https://support.google.com/accounts/answer/61416?hl=de
@@ -183,6 +191,7 @@ const PrivacyPolicy = () => {
             <Link
               href="http://www.opera.com/de/help"
               rel="nofollow noopener noreferrer"
+              sx={{ wordBreak: "break-all" }}
               target="_blank"
             >
               http://www.opera.com/de/help
@@ -193,6 +202,7 @@ const PrivacyPolicy = () => {
             <Link
               href="https://support.apple.com/kb/PH17191?locale=de_DE&viewlocale=de_DE"
               rel="nofollow noopener noreferrer"
+              sx={{ wordBreak: "break-all" }}
               target="_blank"
             >
               https://support.apple.com/kb/PH17191?locale=de_DE&viewlocale=de_DE
@@ -453,6 +463,7 @@ const PrivacyPolicy = () => {
           <Link
             href="https://www.google.com/analytics/terms/de.html und unter https://policies.google.com/?hl=de"
             rel="noopener noreferrer"
+            sx={{ wordBreak: "break-all" }}
             target="_blank"
           >
             https://www.google.com/analytics/terms/de.html und unter
@@ -480,6 +491,7 @@ const PrivacyPolicy = () => {
           <Link
             href="#"
             onClick={() => setAnalyticsCollectionEnabled(analytics, false)}
+            sx={{ wordBreak: "break-all" }}
             title="Google Analytics Opt-Out-Cookie setzen"
           >
             diesen Link anklicken
@@ -505,6 +517,7 @@ const PrivacyPolicy = () => {
           <Link
             href="http://tools.google.com/dlpage/gaoptout?hl=de"
             rel="noopener noreferrer"
+            sx={{ wordBreak: "break-all" }}
             target="_blank"
           >
             Browser Add On zur Deaktivierung von Google Analytics
@@ -563,6 +576,7 @@ const PrivacyPolicy = () => {
             <Link
               href="https://www.activemind.de/datenschutz/datenschutzbeauftragter/"
               rel="noopener noreferrer"
+              sx={{ wordBreak: "break-all" }}
               target="_blank"
             >
               externe Datenschutzbeauftragte
