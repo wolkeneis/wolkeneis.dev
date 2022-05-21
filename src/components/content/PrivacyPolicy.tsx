@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
       }}
     >
       <Paper sx={{ padding: "25px", maxWidth: "850px" }}>
-        <h1>Datenschutzerklärung</h1>
+        <h2>Datenschutzerklärung</h2>
         <p>
           Verantwortlicher im Sinne der Datenschutzgesetze, insbesondere der
           EU-Datenschutzgrundverordnung (DSGVO), ist:
@@ -22,7 +22,7 @@ const PrivacyPolicy = () => {
           <br />
           admin@wolkeneis.dev
         </p>
-        <h2>Ihre Betroffenenrechte</h2>
+        <h3>Ihre Betroffenenrechte</h3>
         <p>
           Unter den angegebenen Kontaktdaten unseres Datenschutzbeauftragten
           können Sie jederzeit folgende Rechte ausüben:
@@ -74,8 +74,8 @@ const PrivacyPolicy = () => {
           .
         </p>
         <p></p>
-        <h2>Erfassung allgemeiner Informationen beim Besuch unserer Website</h2>
-        <h3>Art und Zweck der Verarbeitung:</h3>
+        <h3>Erfassung allgemeiner Informationen beim Besuch unserer Website</h3>
+        <h4>Art und Zweck der Verarbeitung:</h4>
         <p>
           Wenn Sie auf unsere Website zugreifen, d.h., wenn Sie sich nicht
           registrieren oder anderweitig Informationen übermitteln, werden
@@ -99,20 +99,20 @@ const PrivacyPolicy = () => {
           statistisch ausgewertet, um unseren Internetauftritt und die
           dahinterstehende Technik zu optimieren.{" "}
         </p>
-        <h3>Rechtsgrundlage und berechtigtes Interesse:</h3>
+        <h4>Rechtsgrundlage und berechtigtes Interesse:</h4>
         <p>
           Die Verarbeitung erfolgt gemäß Art. 6 Abs. 1 lit. f DSGVO auf Basis
           unseres berechtigten Interesses an der Verbesserung der Stabilität und
           Funktionalität unserer Website.
         </p>
-        <h3>Empfänger:</h3>
+        <h4>Empfänger:</h4>
         <p>
           Empfänger der Daten sind ggf. technische Dienstleister, die für den
           Betrieb und die Wartung unserer Webseite als Auftragsverarbeiter tätig
           werden.
         </p>
         <p></p>
-        <h3>Speicherdauer:</h3>
+        <h4>Speicherdauer:</h4>
         <p>
           Die Daten werden gelöscht, sobald diese für den Zweck der Erhebung
           nicht mehr erforderlich sind. Dies ist für die Daten, die der
@@ -128,7 +128,7 @@ const PrivacyPolicy = () => {
           möglich ist.
         </p>
         <p></p>
-        <h3>Bereitstellung vorgeschrieben oder erforderlich:</h3>
+        <h4>Bereitstellung vorgeschrieben oder erforderlich:</h4>
         <p>
           Die Bereitstellung der vorgenannten personenbezogenen Daten ist weder
           gesetzlich noch vertraglich vorgeschrieben. Ohne die IP-Adresse ist
@@ -138,7 +138,7 @@ const PrivacyPolicy = () => {
           Widerspruch ausgeschlossen.{" "}
         </p>
         <p></p>
-        <h2>Cookies</h2>
+        <h3>Cookies</h3>
         <p>
           Wie viele andere Webseiten verwenden wir auch so genannte „Cookies“.
           Bei Cookies handelt es sich um kleine Textdateien, die auf Ihrem
@@ -209,7 +209,7 @@ const PrivacyPolicy = () => {
             </Link>
           </li>
         </ul>
-        <h3>Speicherdauer und eingesetzte Cookies:</h3>
+        <h4>Speicherdauer und eingesetzte Cookies:</h4>
         <p>
           Soweit Sie uns durch Ihre Browsereinstellungen oder Zustimmung die
           Verwendung von Cookies erlauben, können folgende Cookies auf unseren
@@ -220,8 +220,8 @@ const PrivacyPolicy = () => {
           <br />
           CSRF Schutz Token Cookie 20 Jahre
         </p>
-        <h2>Technisch notwendige Cookies </h2>
-        <h3>Art und Zweck der Verarbeitung: </h3>
+        <h3>Technisch notwendige Cookies </h3>
+        <h4>Art und Zweck der Verarbeitung: </h4>
         <p>
           Wir setzen Cookies ein, um unsere Website nutzerfreundlicher zu
           gestalten. Einige Elemente unserer Internetseite erfordern es, dass
@@ -241,20 +241,20 @@ const PrivacyPolicy = () => {
           <br />
           Übernahme von Spracheinstellungen
         </p>
-        <h3>Rechtsgrundlage und berechtigtes Interesse: </h3>
+        <h4>Rechtsgrundlage und berechtigtes Interesse: </h4>
         <p>
           Die Verarbeitung erfolgt gemäß Art. 6 Abs. 1 lit. f DSGVO auf Basis
           unseres berechtigten Interesses an einer nutzerfreundlichen Gestaltung
           unserer Website.
         </p>
-        <h3>Empfänger: </h3>
+        <h4>Empfänger: </h4>
         <p>
           Empfänger der Daten sind ggf. technische Dienstleister, die für den
           Betrieb und die Wartung unserer Website als Auftragsverarbeiter tätig
           werden.
         </p>
         <p></p>
-        <h3>Bereitstellung vorgeschrieben oder erforderlich:</h3>
+        <h4>Bereitstellung vorgeschrieben oder erforderlich:</h4>
         <p>
           Die Bereitstellung der vorgenannten personenbezogenen Daten ist weder
           gesetzlich noch vertraglich vorgeschrieben. Ohne diese Daten ist
@@ -262,14 +262,14 @@ const PrivacyPolicy = () => {
           gewährleistet. Zudem können einzelne Dienste und Services nicht
           verfügbar oder eingeschränkt sein.
         </p>
-        <h3>Widerspruch</h3>
+        <h4>Widerspruch</h4>
         <p>
           Lesen Sie dazu die Informationen über Ihr Widerspruchsrecht nach Art.
           21 DSGVO weiter unten.
         </p>
         <p></p>
-        <h2>Registrierung auf unserer Website</h2>
-        <h3>Art und Zweck der Verarbeitung:</h3>
+        <h3>Registrierung auf unserer Website</h3>
+        <h4>Art und Zweck der Verarbeitung:</h4>
         <p>
           Für die Registrierung auf unserer Website benötigen wir einige
           personenbezogene Daten, die über eine Eingabemaske an uns übermittelt
@@ -284,25 +284,25 @@ const PrivacyPolicy = () => {
           Ihre Registrierung ist für das Bereithalten bestimmter Inhalte und
           Leistungen auf unserer Website erforderlich.
         </p>
-        <h3>Rechtsgrundlage:</h3>
+        <h4>Rechtsgrundlage:</h4>
         <p>
           Die Verarbeitung der bei der Registrierung eingegebenen Daten erfolgt
           auf Grundlage einer Einwilligung des Nutzers (Art. 6 Abs. 1 lit. a
           DSGVO).
         </p>
-        <h3>Empfänger:</h3>
+        <h4>Empfänger:</h4>
         <p>
           Empfänger der Daten sind ggf. technische Dienstleister, die für den
           Betrieb und die Wartung unserer Website als Auftragsverarbeiter tätig
           werden.
         </p>
         <p></p>
-        <h3>Speicherdauer:</h3>
+        <h4>Speicherdauer:</h4>
         <p>
           Daten werden in diesem Zusammenhang nur verarbeitet, solange die
           entsprechende Einwilligung vorliegt.{" "}
         </p>
-        <h3>Bereitstellung vorgeschrieben oder erforderlich:</h3>
+        <h4>Bereitstellung vorgeschrieben oder erforderlich:</h4>
         <p>
           Die Bereitstellung Ihrer personenbezogenen Daten erfolgt freiwillig,
           allein auf Basis Ihrer Einwilligung. Ohne die Bereitstellung Ihrer
@@ -310,37 +310,37 @@ const PrivacyPolicy = () => {
           angebotenen Inhalte gewähren.{" "}
         </p>
         <p></p>
-        <h2>Erbringung kostenpflichtiger Leistungen</h2>
-        <h3>Art und Zweck der Verarbeitung:</h3>
+        <h3>Erbringung kostenpflichtiger Leistungen</h3>
+        <h4>Art und Zweck der Verarbeitung:</h4>
         <p>
           Zur Erbringung kostenpflichtiger Leistungen werden von uns zusätzliche
           Daten erfragt, wie z.B. Zahlungsangaben, um Ihre Bestellung ausführen
           zu können.
         </p>
-        <h3>Rechtsgrundlage:</h3>
+        <h4>Rechtsgrundlage:</h4>
         <p>
           Die Verarbeitung der Daten, die für den Abschluss des Vertrages
           erforderlich ist, basiert auf Art. 6 Abs. 1 lit. b DSGVO.
         </p>
-        <h3>Empfänger:</h3>
+        <h4>Empfänger:</h4>
         <p>Empfänger der Daten sind ggf. Auftragsverarbeiter.</p>
         <p></p>
-        <h3>Speicherdauer:</h3>
+        <h4>Speicherdauer:</h4>
         <p>
           Wir speichern diese Daten in unseren Systemen bis die gesetzlichen
           Aufbewahrungsfristen abgelaufen sind. Diese betragen grundsätzlich 6
           oder 10 Jahre aus Gründen der ordnungsmäßigen Buchführung und
           steuerrechtlichen Anforderungen.
         </p>
-        <h3>Bereitstellung vorgeschrieben oder erforderlich:</h3>
+        <h4>Bereitstellung vorgeschrieben oder erforderlich:</h4>
         <p>
           Die Bereitstellung Ihrer personenbezogenen Daten erfolgt freiwillig.
           Ohne die Bereitstellung Ihrer personenbezogenen Daten können wir Ihnen
           keinen Zugang auf unsere angebotenen Inhalte und Leistungen gewähren.
         </p>
         <p></p>
-        <h2>Newsletter</h2>
-        <h3>Art und Zweck der Verarbeitung:</h3>
+        <h3>Newsletter</h3>
+        <h4>Art und Zweck der Verarbeitung:</h4>
         <p>
           Für die Zustellung unseres Newsletters erheben wir personenbezogene
           Daten, die über eine Eingabemaske an uns übermittelt werden.
@@ -353,7 +353,7 @@ const PrivacyPolicy = () => {
           zum Newsletter, den Versand einer Bestätigungsmail und den Eingang der
           hiermit angeforderten Antwort. Weitere Daten werden nicht erhoben.{" "}
         </p>
-        <h3>Rechtsgrundlage:</h3>
+        <h4>Rechtsgrundlage:</h4>
         <p>
           Auf Grundlage Ihrer ausdrücklich erteilten Einwilligung (Art. 6 Abs. 1
           lit. a DSGVO), übersenden wir Ihnen regelmäßig unseren Newsletter bzw.
@@ -368,21 +368,21 @@ const PrivacyPolicy = () => {
           auf dieser Website abmelden oder uns Ihren Widerruf über die am Ende
           dieser Datenschutzhinweise angegebene Kontaktmöglichkeit mitteilen.
         </p>
-        <h3>Empfänger:</h3>
+        <h4>Empfänger:</h4>
         <p>Empfänger der Daten sind ggf. Auftragsverarbeiter.</p>
         <p></p>
-        <h3>Speicherdauer:</h3>
+        <h4>Speicherdauer:</h4>
         <p>
           Die Daten werden in diesem Zusammenhang nur verarbeitet, solange die
           entsprechende Einwilligung vorliegt. Danach werden sie gelöscht.
         </p>
-        <h3>Bereitstellung vorgeschrieben oder erforderlich:</h3>
+        <h4>Bereitstellung vorgeschrieben oder erforderlich:</h4>
         <p>
           Die Bereitstellung Ihrer personenbezogenen Daten erfolgt freiwillig,
           allein auf Basis Ihrer Einwilligung. Ohne bestehende Einwilligung
           können wir Ihnen unseren Newsletter leider nicht zusenden.
         </p>
-        <h3>Widerruf der Einwilligung:</h3>
+        <h4>Widerruf der Einwilligung:</h4>
         <p>
           Die Einwilligung zur Speicherung Ihrer persönlichen Daten und ihrer
           Nutzung für den Newsletterversand können Sie jederzeit mit Wirkung für
@@ -391,8 +391,8 @@ const PrivacyPolicy = () => {
           bzw. der für den Datenschutz zuständigen Person beantragt werden.{" "}
         </p>
         <p></p>
-        <h2>Kontaktformular</h2>
-        <h3>Art und Zweck der Verarbeitung:</h3>
+        <h3>Kontaktformular</h3>
+        <h4>Art und Zweck der Verarbeitung:</h4>
         <p>
           Die von Ihnen eingegebenen Daten werden zum Zweck der individuellen
           Kommunikation mit Ihnen gespeichert. Hierfür ist die Angabe einer
@@ -400,7 +400,7 @@ const PrivacyPolicy = () => {
           der Zuordnung der Anfrage und der anschließenden Beantwortung
           derselben. Die Angabe weiterer Daten ist optional.
         </p>
-        <h3>Rechtsgrundlage:</h3>
+        <h4>Rechtsgrundlage:</h4>
         <p>
           Die Verarbeitung der in das Kontaktformular eingegebenen Daten erfolgt
           auf der Grundlage eines berechtigten Interesses (Art. 6 Abs. 1 lit. f
@@ -418,10 +418,10 @@ const PrivacyPolicy = () => {
           zur Durchführung vorvertraglicher Maßnahmen (Art. 6 Abs. 1 lit. b
           DSGVO).
         </p>
-        <h3>Empfänger:</h3>
+        <h4>Empfänger:</h4>
         <p>Empfänger der Daten sind ggf. Auftragsverarbeiter.</p>
         <p></p>
-        <h3>Speicherdauer:</h3>
+        <h4>Speicherdauer:</h4>
         <p>
           Daten werden spätestens 6 Monate nach Bearbeitung der Anfrage
           gelöscht.
@@ -431,14 +431,14 @@ const PrivacyPolicy = () => {
           gesetzlichen Aufbewahrungsfristen nach HGB und löschen Ihre Daten nach
           Ablauf dieser Fristen.{" "}
         </p>
-        <h3>Bereitstellung vorgeschrieben oder erforderlich:</h3>
+        <h4>Bereitstellung vorgeschrieben oder erforderlich:</h4>
         <p>
           Die Bereitstellung Ihrer personenbezogenen Daten erfolgt freiwillig.
           Wir können Ihre Anfrage jedoch nur bearbeiten, sofern Sie uns Ihren
           Namen, Ihre E-Mail-Adresse und den Grund der Anfrage mitteilen.
         </p>
         <p></p>
-        <h2>Verwendung von Google Analytics</h2>
+        <h3>Verwendung von Google Analytics</h3>
         <p>
           Soweit Sie ihre Einwilligung gegeben haben, wird auf dieser Website
           Google Analytics eingesetzt, ein Webanalysedienst der Google LLC, 1600
@@ -484,7 +484,7 @@ const PrivacyPolicy = () => {
           automatisch gelöscht. Die Löschung von Daten, deren Aufbewahrungsdauer
           erreicht ist, erfolgt automatisch einmal im Monat.
         </p>
-        <h3>Widerruf der Einwilligung:</h3>
+        <h4>Widerruf der Einwilligung:</h4>
         <p>
           Sie können das Tracking durch Google Analytics auf unserer Website
           unterbinden, indem Sie{" "}
@@ -525,7 +525,7 @@ const PrivacyPolicy = () => {
           .
         </p>
         <p></p>
-        <h2>SSL-Verschlüsselung</h2>
+        <h3>SSL-Verschlüsselung</h3>
         <p>
           Um die Sicherheit Ihrer Daten bei der Übertragung zu schützen,
           verwenden wir dem aktuellen Stand der Technik entsprechende
@@ -533,8 +533,8 @@ const PrivacyPolicy = () => {
         </p>
         <p></p>
         <hr />
-        <h2>Information über Ihr Widerspruchsrecht nach Art. 21 DSGVO</h2>
-        <h3>Einzelfallbezogenes Widerspruchsrecht</h3>
+        <h3>Information über Ihr Widerspruchsrecht nach Art. 21 DSGVO</h3>
+        <h4>Einzelfallbezogenes Widerspruchsrecht</h4>
         <p>
           Sie haben das Recht, aus Gründen, die sich aus Ihrer besonderen
           Situation ergeben, jederzeit gegen die Verarbeitung Sie betreffender
@@ -551,10 +551,10 @@ const PrivacyPolicy = () => {
           dient der Geltendmachung, Ausübung oder Verteidigung von
           Rechtsansprüchen.
         </p>
-        <h3>Empfänger eines Widerspruchs</h3>
+        <h4>Empfänger eines Widerspruchs</h4>
         <p>admin@wolkeneis.dev</p>
         <hr />
-        <h2>Änderung unserer Datenschutzbestimmungen</h2>
+        <h3>Änderung unserer Datenschutzbestimmungen</h3>
         <p>
           Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie
           stets den aktuellen rechtlichen Anforderungen entspricht oder um
@@ -562,7 +562,7 @@ const PrivacyPolicy = () => {
           z.B. bei der Einführung neuer Services. Für Ihren erneuten Besuch gilt
           dann die neue Datenschutzerklärung.
         </p>
-        <h2>Fragen an den Datenschutzbeauftragten</h2>
+        <h3>Fragen an den Datenschutzbeauftragten</h3>
         <p>
           Wenn Sie Fragen zum Datenschutz haben, schreiben Sie uns bitte eine
           E-Mail oder wenden Sie sich direkt an die für den Datenschutz
