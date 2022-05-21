@@ -2,13 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface InterfaceState {
   theme: "dark-theme" | "light-theme";
+  mobile: boolean;
   drawerOpen: boolean;
   drawerWidth: number;
 }
 
 const initialState: InterfaceState = {
   theme: "dark-theme",
-  drawerOpen: true,
+  mobile: false,
+  drawerOpen: false,
   drawerWidth: 240
 };
 
@@ -26,6 +28,10 @@ export const interfaceSlice = createSlice({
       state.theme = state.theme === "dark-theme" ? "light-theme" : "dark-theme";
     },
 
+    setMobile: (state, action: PayloadAction<boolean>) => {
+      state.mobile = action.payload;
+    },
+
     setDrawerOpen: (state, action: PayloadAction<boolean>) => {
       state.drawerOpen = action.payload;
     },
@@ -39,6 +45,7 @@ export const interfaceSlice = createSlice({
 });
 
 export const { selectTheme, toggleTheme } = interfaceSlice.actions;
+export const { setMobile } = interfaceSlice.actions;
 export const { setDrawerOpen, toggleDrawer, setDrawerWidth } =
   interfaceSlice.actions;
 

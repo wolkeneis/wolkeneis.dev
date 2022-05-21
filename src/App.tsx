@@ -8,7 +8,7 @@ import LinkBehavior from "./components/LinkBehavior";
 import Redirects from "./components/Redirects";
 import "./logic/firebase";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
-import { selectTheme } from "./redux/interfaceSlice";
+import { selectTheme, setDrawerOpen, setMobile } from "./redux/interfaceSlice";
 
 const darkTheme = createTheme({
   palette: {
@@ -50,6 +50,27 @@ function App() {
         )
       );
     }
+    const userAgent = navigator.userAgent;
+    let operatingSystem: string;
+    if (/android/i.test(userAgent)) {
+      operatingSystem = "android";
+    } else if (/iPad|iPhone|iPod/.test(userAgent)) {
+      operatingSystem = "ios";
+    } else if (/Win/.test(userAgent)) {
+      operatingSystem = "windows";
+    } else if (/Mac/i.test(userAgent)) {
+      operatingSystem = "mac";
+    } else {
+      operatingSystem = "unknown";
+    }
+    const mobile: boolean =
+      (navigator as NewNavigator).userAgentData?.mobile ||
+      operatingSystem === "android" ||
+      operatingSystem === "ios";
+    dispatch(setMobile(mobile));
+    if (!mobile) {
+      dispatch(setDrawerOpen(true));
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -69,6 +90,12 @@ function App() {
       </Routes>
     </ThemeProvider>
   );
+}
+
+interface NewNavigator extends Navigator {
+  userAgentData: {
+    mobile: boolean;
+  };
 }
 
 export default App;

@@ -14,6 +14,7 @@ import Profile from "./Profile";
 const Header = () => {
   const drawerOpen = useAppSelector((state) => state.interface.drawerOpen);
   const drawerWidth = useAppSelector((state) => state.interface.drawerWidth);
+  const mobile = useAppSelector((state) => state.interface.mobile);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ const Header = () => {
       <AppBar
         drawerOpen={drawerOpen}
         drawerWidth={drawerWidth}
+        mobile={mobile}
         position="fixed"
       >
         <Toolbar>
@@ -33,7 +35,7 @@ const Header = () => {
             edge="start"
             onClick={() => dispatch(toggleDrawer())}
             size="large"
-            sx={{ mr: 2, ...(drawerOpen && { display: "none" }) }}
+            sx={{ mr: 2, ...(!mobile && drawerOpen && { display: "none" }) }}
           >
             <MenuIcon />
           </IconButton>
@@ -68,23 +70,26 @@ const Header = () => {
 };
 
 const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== "drawerOpen" && prop !== "drawerWidth"
+  shouldForwardProp: (prop) =>
+    prop !== "drawerOpen" && prop !== "drawerWidth" && prop !== "mobile"
 })<{
   drawerOpen: boolean;
   drawerWidth: number;
-}>(({ theme, drawerOpen, drawerWidth }) => ({
+  mobile: boolean;
+}>(({ theme, drawerOpen, drawerWidth, mobile }) => ({
   transition: theme.transitions.create(["margin", "width"], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
   }),
-  ...(drawerOpen && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
+  ...(!mobile &&
+    drawerOpen && {
+      width: `calc(100% - ${drawerWidth}px)`,
+      marginLeft: `${drawerWidth}px`,
+      transition: theme.transitions.create(["margin", "width"], {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen
+      })
     })
-  })
 }));
 
 export default Header;

@@ -14,6 +14,7 @@ import { useAppSelector } from "../../redux/hooks";
 
 const LoginPage = () => {
   const theme = useAppSelector((state) => state.interface.theme);
+  const mobile = useAppSelector((state) => state.interface.mobile);
 
   return (
     <Box
@@ -21,11 +22,15 @@ const LoginPage = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        margin: "auto"
+        marginTop: mobile ? 0 : "18%"
       }}
     >
-      <Card sx={{ width: 345, marginTop: -15 }}>
+      <Card
+        sx={{
+          maxWidth: 385,
+          width: "fill-available"
+        }}
+      >
         <CardHeader title="Login" />
         <CardMedia
           alt="Random Image"

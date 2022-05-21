@@ -20,6 +20,7 @@ import { useAppSelector } from "../../redux/hooks";
 
 const ProfileSettings = () => {
   const profile = useAppSelector((state) => state.session.profile);
+  const mobile = useAppSelector((state) => state.interface.mobile);
   const [privateProfile, setPrivate] = useState(false);
   const navigate = useNavigate();
 
@@ -54,7 +55,7 @@ const ProfileSettings = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: "32px"
+        marginTop: mobile ? 0 : 4
       }}
     >
       {profile === undefined ? (
@@ -63,7 +64,12 @@ const ProfileSettings = () => {
         <>
           {profile !== null ? (
             <>
-              <Card sx={{ width: 365 }}>
+              <Card
+                sx={{
+                  maxWidth: 385,
+                  width: "fill-available"
+                }}
+              >
                 <CardHeader
                   avatar={
                     <>

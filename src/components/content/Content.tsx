@@ -10,11 +10,12 @@ import ProfileSettings from "./ProfileSettings";
 const Content = () => {
   const drawerOpen = useAppSelector((state) => state.interface.drawerOpen);
   const drawerWidth = useAppSelector((state) => state.interface.drawerWidth);
+  const mobile = useAppSelector((state) => state.interface.mobile);
 
   return (
     <>
       <Header />
-      <Main drawerOpen={drawerOpen} drawerWidth={drawerWidth}>
+      <Main drawerOpen={drawerOpen} drawerWidth={drawerWidth} mobile={mobile}>
         <HeaderSpacer />
         <Routes>
           <Route element={<ProfileSettings />} path="/profile" />
@@ -28,11 +29,13 @@ const Content = () => {
 };
 
 const Main = styled("main", {
-  shouldForwardProp: (prop) => prop !== "drawerOpen" && prop !== "drawerWidth"
+  shouldForwardProp: (prop) =>
+    prop !== "drawerOpen" && prop !== "drawerWidth" && prop !== "mobile"
 })<{
   drawerOpen: boolean;
   drawerWidth: number;
-}>(({ theme, drawerOpen, drawerWidth }) => ({
+  mobile: boolean;
+}>(({ theme, drawerOpen, drawerWidth, mobile }) => ({
   display: "flex",
   flexDirection: "column",
   flexGrow: 1,
@@ -41,14 +44,15 @@ const Main = styled("main", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
   }),
-  marginLeft: `-${drawerWidth}px`,
-  ...(drawerOpen && {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen
-    }),
-    marginLeft: 0
-  })
+  marginLeft: `-${!mobile ? drawerWidth : 0}px`,
+  ...(!mobile &&
+    drawerOpen && {
+      transition: theme.transitions.create("margin", {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen
+      }),
+      marginLeft: 0
+    })
 }));
 
 const HeaderSpacer = styled("div")(({ theme }) => ({

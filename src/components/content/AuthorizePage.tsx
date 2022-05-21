@@ -14,8 +14,10 @@ import {
   ListItemText
 } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
+import { useAppSelector } from "../../redux/hooks";
 
 const Authorization = () => {
+  const mobile = useAppSelector((state) => state.interface.mobile);
   const [parameters] = useSearchParams();
 
   return (
@@ -24,8 +26,7 @@ const Authorization = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
-        margin: "auto"
+        marginTop: mobile ? 0 : "18%"
       }}
     >
       <form
@@ -45,7 +46,12 @@ const Authorization = () => {
           type="hidden"
           value={`${parameters.get("_csrf")}`}
         />
-        <Card sx={{ width: 345, marginTop: -15 }}>
+        <Card
+          sx={{
+            maxWidth: 385,
+            width: "fill-available"
+          }}
+        >
           <CardHeader
             subheader={`The external App "${parameters.get(
               "application"

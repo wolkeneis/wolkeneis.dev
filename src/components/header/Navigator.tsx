@@ -7,14 +7,13 @@ import {
 } from "@mui/icons-material";
 import {
   Divider,
-  Drawer,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListSubheader,
   styled,
+  SwipeableDrawer,
   Typography,
   useTheme
 } from "@mui/material";
@@ -26,22 +25,29 @@ import LinkBehavior from "../LinkBehavior";
 const Navigator = () => {
   const drawerOpen = useAppSelector((state) => state.interface.drawerOpen);
   const drawerWidth = useAppSelector((state) => state.interface.drawerWidth);
+  const mobile = useAppSelector((state) => state.interface.mobile);
   const dispatch = useAppDispatch();
   const theme = useTheme();
 
   return (
-    <Drawer
+    <SwipeableDrawer
       anchor="left"
+      onClose={() => dispatch(toggleDrawer())}
+      onOpen={() => dispatch(toggleDrawer())}
       open={drawerOpen}
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: drawerWidth,
-          boxSizing: "border-box"
-        }
-      }}
-      variant="persistent"
+      sx={
+        mobile
+          ? {}
+          : {
+              width: drawerWidth,
+              flexShrink: 0,
+              "& .MuiDrawer-paper": {
+                width: drawerWidth,
+                boxSizing: "border-box"
+              }
+            }
+      }
+      variant={mobile ? "temporary" : "persistent"}
     >
       <DrawerHeader>
         <IconButton onClick={() => dispatch(toggleDrawer())}>
@@ -66,7 +72,10 @@ const Navigator = () => {
           </ListItemIcon>
           <ListItemText primary="Privacy Policy" />
         </ListItem>
-        <ListSubheader>Developer</ListSubheader>
+        <Divider />
+        <Typography sx={{ margin: 2 }} variant="subtitle2">
+          Developer
+        </Typography>
         <ListItem button component={LinkBehavior} href="/documentation">
           <ListItemIcon>
             <DescriptionIcon />
@@ -87,7 +96,7 @@ const Navigator = () => {
         <br />
         Version {packageJson.version}
       </Typography>
-    </Drawer>
+    </SwipeableDrawer>
   );
 };
 
