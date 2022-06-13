@@ -1,4 +1,5 @@
-import { Logout, Settings } from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
 import {
   Avatar,
   Button,
@@ -75,14 +76,14 @@ const Profile = () => {
               >
                 <MenuItem onClick={handleAccountClick}>
                   <ListItemIcon>
-                    <Settings fontSize="small" />
+                    <SettingsIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText primary="Account" />
                 </MenuItem>
                 <Divider />
                 <MenuItem component="a" href={"/redirect/logout"}>
                   <ListItemIcon>
-                    <Logout fontSize="small" />
+                    <LogoutIcon fontSize="small" />
                   </ListItemIcon>
                   <ListItemText primary="Logout" />
                 </MenuItem>

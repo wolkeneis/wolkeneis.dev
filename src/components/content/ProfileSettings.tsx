@@ -1,4 +1,4 @@
-import { Logout as LogoutIcon } from "@mui/icons-material";
+import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Avatar,
   Box,

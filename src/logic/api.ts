@@ -1,4 +1,4 @@
-import { v1 } from "moos-api";
+import { type v1 } from "moos-api";
 import { setCSRFToken } from "../redux/sessionSlice";
 import { store } from "../redux/store";
 
@@ -75,7 +75,7 @@ async function _fetch(
 ): Promise<Response> {
   return fetch(
     `${
-      process.env.REACT_APP_MOOS_BACKEND ?? "https://moos.wolkeneis.dev"
+      import.meta.env.VITE_MOOS_BACKEND ?? "https://moos.wolkeneis.dev"
     }/api/v1${endpoint}`,
     {
       method: "POST",

@@ -1,8 +1,8 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { configureStore, Store } from "@reduxjs/toolkit";
 import interfaceReducer from "./interfaceSlice";
 import sessionReducer from "./sessionSlice";
 
-export const store = configureStore({
+export const store: Store = configureStore({
   reducer: {
     interface: interfaceReducer,
     session: sessionReducer

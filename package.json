@@ -1,17 +1,37 @@
 {
   "name": "wolkeneis.dev",
   "version": "0.1.0",
+  "private": true,
   "description": "wolkeneis.dev",
+  "keywords": [],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/wolkeneis/wolkeneis.dev.git"
   },
-  "author": "Frooastside",
+  "author": "Frooastside <frooastside@gmail.com>",
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/wolkeneis/wolkeneis.dev/issues"
   },
   "homepage": "https://wolkeneis.dev/",
+  "type": "module",
+  "engines": {
+    "node": "*",
+    "vscode": "^1.22.0",
+    "npm": "^8.x.x",
+    "pnpm": "7.x.x"
+  },
+  "main": "<<MAIN>>",
+  "bin": {},
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint --ext js,ts,jsx,tsx .",
+    "lint:fix": "pnpm eslint --fix --ext js,ts,jsx,tsx .",
+    "pretty": "prettier --write .",
+    "prepare": "husky install"
+  },
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
@@ -20,44 +40,12 @@
     "@mui/material": "^5.8.3",
     "@reduxjs/toolkit": "^1.8.2",
     "firebase": "^9.8.3",
-    "moos-api": "^0.2.1",
     "qrcode.react": "^3.0.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
-    "sass": "^1.52.3",
-    "typescript": "^4.7.3",
     "uuid": "^8.3.2"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "ci": "echo CI",
-    "lint": "eslint . --ext .jsx,.ts,.tsx",
-    "lint:fix": "yarn lint --fix",
-    "pretty": "prettier --write .",
-    "prepare": "husky install"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   },
   "devDependencies": {
     "@types/node": "^17.0.42",
@@ -69,15 +57,20 @@
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
+    "@vitejs/plugin-react": "^1.3.2",
     "eslint": "^8.17.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-react": "^7.30.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.1",
-    "prettier": "2.6.2"
+    "moos-api": "^0.2.1",
+    "prettier": "2.6.2",
+    "sass": "^1.52.3",
+    "typescript": "^4.7.3",
+    "vite": "^2.9.12"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": "eslint --ext .jsx --cache --fix",
-    "*.{js,jsx,ts,tsx,css,md,json}": "prettier --write"
+    "*.{js,ts,jsx,tsx}": "eslint --ext js,ts,jsx,tsx --cache --fix",
+    "*.{js,ts,jsx,tsx,css,md,json}": "prettier --write"
   }
 }
