@@ -31,7 +31,7 @@ const Authorization = () => {
     >
       <form
         action={`${
-          process.env.REACT_APP_MOOS_BACKEND ?? "https://moos.wolkeneis.dev"
+          import.meta.env.VITE_MOOS_BACKEND ?? "https://moos.wolkeneis.dev"
         }/oauth2/authorize`}
         id="authorization-form"
         method="post"

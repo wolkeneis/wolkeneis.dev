@@ -33,7 +33,7 @@ const Header = () => {
             aria-label="menu"
             color="inherit"
             edge="start"
-            onClick={() => dispatch(toggleDrawer())}
+            onClick={() => dispatch(toggleDrawer(null))}
             size="large"
             sx={{ mr: 2, ...(!mobile && drawerOpen && { display: "none" }) }}
           >

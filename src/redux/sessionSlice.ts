@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { v1 } from "moos-api";
+import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import { type v1 } from "moos-api";
 
 interface SessionState {
   profile?: v1.UserProfile | null;
@@ -11,7 +11,7 @@ const initialState: SessionState = {
   csrfToken: undefined
 };
 
-export const sessionSlice = createSlice({
+export const sessionSlice: Slice = createSlice({
   name: "session",
   initialState,
   reducers: {

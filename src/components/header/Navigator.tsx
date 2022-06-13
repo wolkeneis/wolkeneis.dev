@@ -1,10 +1,8 @@
-import {
-  Apps as AppsIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-  Description as DescriptionIcon,
-  PrivacyTip as PrivacyTipIcon
-} from "@mui/icons-material";
+import AppsIcon from "@mui/icons-material/Apps";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import DescriptionIcon from "@mui/icons-material/Description";
+import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import {
   Divider,
   IconButton,
@@ -17,7 +15,6 @@ import {
   Typography,
   useTheme
 } from "@mui/material";
-import packageJson from "../../../package.json";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { toggleDrawer } from "../../redux/interfaceSlice";
 import LinkBehavior from "../LinkBehavior";
@@ -32,8 +29,8 @@ const Navigator = () => {
   return (
     <SwipeableDrawer
       anchor="left"
-      onClose={() => dispatch(toggleDrawer())}
-      onOpen={() => dispatch(toggleDrawer())}
+      onClose={() => dispatch(toggleDrawer(null))}
+      onOpen={() => dispatch(toggleDrawer(null))}
       open={drawerOpen}
       sx={
         mobile
@@ -50,7 +47,7 @@ const Navigator = () => {
       variant={mobile ? "temporary" : "persistent"}
     >
       <DrawerHeader>
-        <IconButton onClick={() => dispatch(toggleDrawer())}>
+        <IconButton onClick={() => dispatch(toggleDrawer(null))}>
           {theme.direction === "ltr" ? (
             <ChevronLeftIcon />
           ) : (
@@ -94,7 +91,7 @@ const Navigator = () => {
       >
         Wolkeneis, Copyright © 2022
         <br />
-        Version {packageJson.version}
+        Version {import.meta.env.VITE_SITE_VERSION}
       </Typography>
     </SwipeableDrawer>
   );

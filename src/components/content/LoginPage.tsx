@@ -1,4 +1,4 @@
-import { Google as GoogleIcon } from "@mui/icons-material";
+import GoogleIcon from "@mui/icons-material/Google";
 import {
   Box,
   Card,
@@ -43,7 +43,7 @@ const LoginPage = () => {
             aria-label="google"
             component="a"
             href={`${
-              process.env.REACT_APP_MOOS_BACKEND ?? "https://moos.wolkeneis.dev"
+              import.meta.env.VITE_MOOS_BACKEND ?? "https://moos.wolkeneis.dev"
             }/login/google`}
           >
             <GoogleIcon />
@@ -52,7 +52,7 @@ const LoginPage = () => {
             aria-label="discord"
             component="a"
             href={`${
-              process.env.REACT_APP_MOOS_BACKEND ?? "https://moos.wolkeneis.dev"
+              import.meta.env.VITE_MOOS_BACKEND ?? "https://moos.wolkeneis.dev"
             }/login/discord`}
           >
             <img
