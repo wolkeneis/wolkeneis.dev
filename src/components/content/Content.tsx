@@ -23,6 +23,7 @@ const Content = () => {
           <Route element={<Authorization />} path="/authorize" />
           <Route element={<PrivacyPolicy />} path="/privacy" />
         </Routes>
+        <HeaderSpacer />
       </Main>
     </>
   );
