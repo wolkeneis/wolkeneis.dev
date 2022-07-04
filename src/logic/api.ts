@@ -2,6 +2,16 @@ import { type v1 } from "moos-api";
 import { setCSRFToken } from "../redux/sessionSlice";
 import { store } from "../redux/store";
 
+export async function fetchCollection(
+  options: v1.operations["post-profile-collection"]["requestBody"]["content"]["application/json"]
+): Promise<v1.SeasonGroup | null> {
+  return (
+    ((await _csrfFetch("/profile/collection", options, { method: "POST" }).then(
+      (response) => response.json()
+    )) as v1.SeasonGroup) ?? null
+  );
+}
+
 export async function createCollection(
   options: v1.operations["put-profile-collection"]["requestBody"]["content"]["application/json"]
 ): Promise<v1.SeasonGroup | null> {
@@ -9,6 +19,36 @@ export async function createCollection(
     ((await _csrfFetch("/profile/collection", options, { method: "PUT" }).then(
       (response) => response.json()
     )) as v1.SeasonGroup) ?? null
+  );
+}
+
+export async function updateCollection(
+  options: v1.operations["patch-profile-collection"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/collection", options, { method: "PATCH" }).then(
+      (response) => response.ok
+    )) ?? false
+  );
+}
+
+export async function deleteCollection(
+  options: v1.operations["delete-profile-collection"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/collection", options, {
+      method: "DELETE"
+    }).then((response) => response.ok)) ?? false
+  );
+}
+
+export async function fetchSeason(
+  options: v1.operations["post-profile-list"]["requestBody"]["content"]["application/json"]
+): Promise<v1.Season | null> {
+  return (
+    ((await _csrfFetch("/profile/list", options, { method: "POST" }).then(
+      (response) => response.json()
+    )) as v1.Season) ?? null
   );
 }
 
@@ -22,6 +62,36 @@ export async function createSeason(
   );
 }
 
+export async function updateSeason(
+  options: v1.operations["patch-profile-list"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/list", options, { method: "PATCH" }).then(
+      (response) => response.ok
+    )) ?? false
+  );
+}
+
+export async function deleteSeason(
+  options: v1.operations["delete-profile-list"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/list", options, { method: "DELETE" }).then(
+      (response) => response.ok
+    )) ?? false
+  );
+}
+
+export async function fetchEpisode(
+  options: v1.operations["post-profile-episode"]["requestBody"]["content"]["application/json"]
+): Promise<v1.Episode | null> {
+  return (
+    ((await _csrfFetch("/profile/episode", options, { method: "POST" }).then(
+      (response) => response.json()
+    )) as v1.Episode) ?? null
+  );
+}
+
 export async function createEpisode(
   options: v1.operations["put-profile-episode"]["requestBody"]["content"]["application/json"]
 ): Promise<v1.Episode | null> {
@@ -32,6 +102,40 @@ export async function createEpisode(
   );
 }
 
+export async function updateEpisode(
+  options: v1.operations["patch-profile-episode"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/episode", options, { method: "PATCH" }).then(
+      (response) => response.ok
+    )) ?? false
+  );
+}
+
+export async function deleteEpisode(
+  options: v1.operations["delete-profile-episode"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/episode", options, { method: "DELETE" }).then(
+      (response) => response.ok
+    )) ?? false
+  );
+}
+
+export async function fetchSource(
+  options: v1.operations["post-profile-source"]["requestBody"]["content"]["application/json"]
+): Promise<
+  | v1.operations["post-profile-source"]["responses"]["200"]["content"]["application/json"]
+  | null
+> {
+  return (
+    ((await _csrfFetch("/profile/source", options, { method: "POST" }).then(
+      (response) => response.json()
+    )) as v1.operations["post-profile-source"]["responses"]["200"]["content"]["application/json"]) ??
+    null
+  );
+}
+
 export async function createSource(
   options: v1.operations["put-profile-source"]["requestBody"]["content"]["application/json"]
 ): Promise<v1.Source | null> {
@@ -39,6 +143,40 @@ export async function createSource(
     ((await _csrfFetch("/profile/source", options, { method: "PUT" }).then(
       (response) => response.json()
     )) as v1.Source) ?? null
+  );
+}
+
+export async function updateSource(
+  options: v1.operations["patch-profile-source"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/source", options, { method: "PATCH" }).then(
+      (response) => response.ok
+    )) ?? false
+  );
+}
+
+export async function deleteSource(
+  options: v1.operations["delete-profile-source"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/source", options, { method: "DELETE" }).then(
+      (response) => response.ok
+    )) ?? false
+  );
+}
+
+export async function fetchFile(
+  options: v1.operations["get-profile-file"]["requestBody"]["content"]["application/json"]
+): Promise<
+  | v1.operations["get-profile-file"]["responses"]["200"]["content"]["application/json"]
+  | null
+> {
+  return (
+    ((await _csrfFetch("/profile/file", options, { method: "POST" }).then(
+      (response) => response.json()
+    )) as v1.operations["get-profile-file"]["responses"]["200"]["content"]["application/json"]) ??
+    null
   );
 }
 
@@ -53,6 +191,16 @@ export async function createFile(
       (response) => response.json()
     )) as v1.operations["put-profile-file"]["responses"]["200"]["content"]["application/json"]) ??
     null
+  );
+}
+
+export async function updateFile(
+  options: v1.operations["patch-profile-file"]["requestBody"]["content"]["application/json"]
+): Promise<boolean> {
+  return (
+    (await _csrfFetch("/profile/file", options, { method: "PATCH" }).then(
+      (response) => response.ok
+    )) ?? false
   );
 }
 
