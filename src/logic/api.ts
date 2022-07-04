@@ -214,6 +214,18 @@ export async function deleteFile(
   );
 }
 
+export async function fetchFiles(): Promise<
+  | v1.operations["get-profile-files"]["responses"]["200"]["content"]["application/json"]
+  | null
+> {
+  return (
+    ((await _csrfFetch("/profile/files", undefined, { method: "POST" }).then(
+      (response) => response.json()
+    )) as v1.operations["get-profile-files"]["responses"]["200"]["content"]["application/json"]) ??
+    null
+  );
+}
+
 export async function fetchProfile(): Promise<v1.UserProfile | null> {
   return _csrfFetch("/profile", undefined, { method: "POST" }).then(
     (response) => response.json()

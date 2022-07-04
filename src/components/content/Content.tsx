@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { useAppSelector } from "../../redux/hooks";
 import Header from "../header/Header";
 import Authorization from "./AuthorizePage";
+import Files from "./Files";
 import LoginPage from "./LoginPage";
 import PrivacyPolicy from "./PrivacyPolicy";
 import ProfileSettings from "./ProfileSettings";
@@ -22,6 +23,7 @@ const Content = () => {
           <Route element={<LoginPage />} path="/login" />
           <Route element={<Authorization />} path="/authorize" />
           <Route element={<PrivacyPolicy />} path="/privacy" />
+          <Route element={<Files />} path="/files" />
         </Routes>
         <HeaderSpacer />
       </Main>
