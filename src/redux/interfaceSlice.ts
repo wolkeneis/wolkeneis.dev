@@ -5,13 +5,15 @@ interface InterfaceState {
   mobile: boolean;
   drawerOpen: boolean;
   drawerWidth: number;
+  uploadDialogVisible: boolean;
 }
 
 const initialState: InterfaceState = {
   theme: "dark-theme",
   mobile: false,
   drawerOpen: false,
-  drawerWidth: 240
+  drawerWidth: 240,
+  uploadDialogVisible: false
 };
 
 export const interfaceSlice: Slice = createSlice({
@@ -40,6 +42,10 @@ export const interfaceSlice: Slice = createSlice({
     },
     setDrawerWidth: (state, action: PayloadAction<number>) => {
       state.drawerWidth = action.payload;
+    },
+
+    setUploadDialogVisible(state, action: PayloadAction<boolean>) {
+      state.uploadDialogVisible = action.payload;
     }
   }
 });
@@ -48,5 +54,6 @@ export const { selectTheme, toggleTheme } = interfaceSlice.actions;
 export const { setMobile } = interfaceSlice.actions;
 export const { setDrawerOpen, toggleDrawer, setDrawerWidth } =
   interfaceSlice.actions;
+export const { setUploadDialogVisible } = interfaceSlice.actions;
 
 export default interfaceSlice.reducer;
