@@ -1,4 +1,6 @@
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
   Box,
@@ -12,6 +14,10 @@ import {
 } from "@mui/material";
 import {
   DataGrid,
+  GridActionsCellItem,
+  GridCellModes,
+  GridCellModesModel,
+  GridRowId,
   GridRowParams,
   GridRowsProp,
   GridToolbarContainer,
@@ -52,7 +58,6 @@ const root: Directory = {
 
 const Files = () => {
   const files = useAppSelector((state) => state.session.files);
-  const navigate = useNavigate();
 
   useEffect(() => {
     updateFileList();
@@ -119,7 +124,7 @@ const Files = () => {
 const Grid = ({ root }: { root: Directory }) => {
   const [gridData, setGridData] = useState<GridRowsProp>();
   const [currentDirectory, setCurrentDirectory] = useState<Directory>(root);
-  const files = useAppSelector((state) => state.session.files);
+  const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>();
   const hash = useLocation().hash.substring(1);
   const navigate = useNavigate();
 
@@ -137,7 +142,7 @@ const Grid = ({ root }: { root: Directory }) => {
       }
       setGridData(gridData);
     }
-  }, [currentDirectory, files]);
+  }, [currentDirectory, currentDirectory.children]);
 
   useEffect(() => {
     const paths = hash.split("/");
@@ -159,16 +164,56 @@ const Grid = ({ root }: { root: Directory }) => {
     navigate(`/files#${rowParams?.id}`);
   };
 
+  const onRowEdit = (id: GridRowId) => {
+    const newCellModesModel = { ...cellModesModel };
+    newCellModesModel[id] = {
+      name: {
+        mode: GridCellModes.Edit
+      }
+    };
+    setCellModesModel(newCellModesModel);
+  };
+
   return (
     <>
       <UploadDialog currentDirectory={currentDirectory} />
       {gridData && (
         <DataGrid
-          columns={[{ field: "name", headerName: "Name", flex: 2 }]}
+          cellModesModel={cellModesModel}
+          columns={[
+            {
+              field: "name",
+              headerName: "Name",
+              flex: 2
+            },
+            {
+              field: "actions",
+              type: "actions",
+              headerName: "Actions",
+              flex: 0.5,
+              getActions: ({ id }) => {
+                return [
+                  <GridActionsCellItem
+                    icon={<EditIcon />}
+                    key="edit"
+                    label="Edit"
+                    onClick={() => onRowEdit(id)}
+                  />,
+                  <GridActionsCellItem
+                    icon={<DeleteIcon />}
+                    key="delete"
+                    label="Delete"
+                    onClick={() => console.log(id)}
+                  />
+                ];
+              }
+            }
+          ]}
           components={{
             NoRowsOverlay: CustomNoRowsOverlay,
             Toolbar: CustomToolbar
           }}
+          experimentalFeatures={{ newEditingApi: true }}
           onRowDoubleClick={onRowClick}
           rows={gridData}
         />
@@ -221,7 +266,6 @@ const UploadDialog = ({
       const file = fileInput.current.files[0];
       if (file) {
         setFile(file);
-        console.log(file);
       }
     }
   };
