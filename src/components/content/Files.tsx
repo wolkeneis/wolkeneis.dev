@@ -51,8 +51,6 @@ const root: Directory = {
 };
 
 const Files = () => {
-  const theme = useAppSelector((state) => state.interface.theme);
-  const mobile = useAppSelector((state) => state.interface.mobile);
   const files = useAppSelector((state) => state.session.files);
   const navigate = useNavigate();
 
@@ -228,7 +226,6 @@ const UploadDialog = ({
   };
 
   const handleUpload = async () => {
-    handleClose();
     if (file) {
       const response = await createFile({
         name: `${
@@ -248,6 +245,8 @@ const UploadDialog = ({
             signal: abortController.signal,
             body: file
           });
+          updateFileList();
+          handleClose();
           setFile(undefined);
         } catch (error) {
           await deleteFile({ id: response.id });
