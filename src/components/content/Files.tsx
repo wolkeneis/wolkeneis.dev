@@ -119,6 +119,7 @@ const Files = () => {
 const Grid = ({ root }: { root: Directory }) => {
   const [gridData, setGridData] = useState<GridRowsProp>();
   const [currentDirectory, setCurrentDirectory] = useState<Directory>(root);
+  const files = useAppSelector((state) => state.session.files);
   const hash = useLocation().hash.substring(1);
   const navigate = useNavigate();
 
@@ -136,7 +137,7 @@ const Grid = ({ root }: { root: Directory }) => {
       }
       setGridData(gridData);
     }
-  }, [currentDirectory]);
+  }, [currentDirectory, files]);
 
   useEffect(() => {
     const paths = hash.split("/");
