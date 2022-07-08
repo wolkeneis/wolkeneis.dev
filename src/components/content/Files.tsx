@@ -3,6 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -10,6 +11,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Snackbar,
   Typography
 } from "@mui/material";
 import {
@@ -30,7 +32,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { createFile, deleteFile } from "../../logic/api";
 import { updateFileList } from "../../logic/files";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { setUploadDialogVisible } from "../../redux/interfaceSlice";
+import {
+  setFileDeletionErrorVisible,
+  setUploadDialogVisible
+} from "../../redux/interfaceSlice";
 
 interface FileTreeItem {
   id: string;
@@ -58,6 +63,15 @@ const root: Directory = {
 
 const Files = () => {
   const files = useAppSelector((state) => state.session.files);
+  const [gridData, setGridData] = useState<GridRowsProp>();
+  const [currentDirectory, setCurrentDirectory] = useState<Directory>(root);
+  const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>();
+  const fileDeletionErrorVisible = useAppSelector(
+    (state) => state.interface.fileDeletionErrorVisible
+  );
+  const hash = useLocation().hash.substring(1);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     updateFileList();
@@ -104,31 +118,15 @@ const Files = () => {
           currentDirectory.children.push(fileItem);
         }
       });
+      updateGridDate();
     }
   }, [files]);
 
-  return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        minHeight: "30rem"
-      }}
-    >
-      <Grid root={root} />
-    </Box>
-  );
-};
-
-const Grid = ({ root }: { root: Directory }) => {
-  const [gridData, setGridData] = useState<GridRowsProp>();
-  const [currentDirectory, setCurrentDirectory] = useState<Directory>(root);
-  const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>();
-  const hash = useLocation().hash.substring(1);
-  const navigate = useNavigate();
-
   useEffect(() => {
+    updateGridDate();
+  }, [currentDirectory]);
+
+  const updateGridDate = () => {
     if (currentDirectory) {
       let gridData = currentDirectory.children;
       if (currentDirectory.parent) {
@@ -142,7 +140,7 @@ const Grid = ({ root }: { root: Directory }) => {
       }
       setGridData(gridData);
     }
-  }, [currentDirectory, currentDirectory.children]);
+  };
 
   useEffect(() => {
     const paths = hash.split("/");
@@ -174,9 +172,39 @@ const Grid = ({ root }: { root: Directory }) => {
     setCellModesModel(newCellModesModel);
   };
 
+  const onDelete = async (id: string) => {
+    const successful = await deleteFile({ id: id });
+    if (successful) {
+      await updateFileList();
+    } else {
+      dispatch(setFileDeletionErrorVisible(true));
+    }
+  };
+
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        minHeight: "30rem"
+      }}
+    >
       <UploadDialog currentDirectory={currentDirectory} />
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        autoHideDuration={4000}
+        onClose={() => dispatch(setFileDeletionErrorVisible(false))}
+        open={fileDeletionErrorVisible}
+      >
+        <Alert
+          onClose={() => dispatch(setFileDeletionErrorVisible(false))}
+          severity="error"
+          variant="filled"
+        >
+          An error occurred while deleting the file!
+        </Alert>
+      </Snackbar>
       {gridData && (
         <DataGrid
           cellModesModel={cellModesModel}
@@ -203,7 +231,7 @@ const Grid = ({ root }: { root: Directory }) => {
                     icon={<DeleteIcon />}
                     key="delete"
                     label="Delete"
-                    onClick={() => console.log(id)}
+                    onClick={() => onDelete(id as string)}
                   />
                 ];
               }
@@ -214,11 +242,12 @@ const Grid = ({ root }: { root: Directory }) => {
             Toolbar: CustomToolbar
           }}
           experimentalFeatures={{ newEditingApi: true }}
+          loading={files === undefined}
           onRowDoubleClick={onRowClick}
           rows={gridData}
         />
       )}
-    </>
+    </Box>
   );
 };
 

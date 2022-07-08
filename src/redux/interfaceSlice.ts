@@ -6,6 +6,7 @@ interface InterfaceState {
   drawerOpen: boolean;
   drawerWidth: number;
   uploadDialogVisible: boolean;
+  fileDeletionErrorVisible: boolean;
 }
 
 const initialState: InterfaceState = {
@@ -13,7 +14,8 @@ const initialState: InterfaceState = {
   mobile: false,
   drawerOpen: false,
   drawerWidth: 240,
-  uploadDialogVisible: false
+  uploadDialogVisible: false,
+  fileDeletionErrorVisible: false
 };
 
 export const interfaceSlice: Slice = createSlice({
@@ -46,6 +48,10 @@ export const interfaceSlice: Slice = createSlice({
 
     setUploadDialogVisible(state, action: PayloadAction<boolean>) {
       state.uploadDialogVisible = action.payload;
+    },
+
+    setFileDeletionErrorVisible(state, action: PayloadAction<boolean>) {
+      state.fileDeletionErrorVisible = action.payload;
     }
   }
 });
@@ -54,6 +60,7 @@ export const { selectTheme, toggleTheme } = interfaceSlice.actions;
 export const { setMobile } = interfaceSlice.actions;
 export const { setDrawerOpen, toggleDrawer, setDrawerWidth } =
   interfaceSlice.actions;
-export const { setUploadDialogVisible } = interfaceSlice.actions;
+export const { setUploadDialogVisible, setFileDeletionErrorVisible } =
+  interfaceSlice.actions;
 
 export default interfaceSlice.reducer;
