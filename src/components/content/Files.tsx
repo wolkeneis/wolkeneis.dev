@@ -1,3 +1,4 @@
+import CheckIcon from "@mui/icons-material/Check";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -11,6 +12,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  LinearProgress,
   Snackbar,
   Typography
 } from "@mui/material";
@@ -29,11 +31,13 @@ import {
 import { v1 } from "moos-api";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { createFile, deleteFile } from "../../logic/api";
+import { createFile, deleteFile, updateFile } from "../../logic/api";
 import { updateFileList } from "../../logic/files";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   setFileDeletionErrorVisible,
+  setFileEditErrorVisible,
+  setFolderDialogVisible,
   setUploadDialogVisible
 } from "../../redux/interfaceSlice";
 
@@ -66,8 +70,15 @@ const Files = () => {
   const [gridData, setGridData] = useState<GridRowsProp>();
   const [currentDirectory, setCurrentDirectory] = useState<Directory>(root);
   const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>();
+  const [loading, setLoading] = useState(false);
+  const [filenameState, setFilenameState] = useState<{
+    [key: GridRowId]: { original: string; value: string };
+  }>({});
   const fileDeletionErrorVisible = useAppSelector(
     (state) => state.interface.fileDeletionErrorVisible
+  );
+  const fileEditErrorVisible = useAppSelector(
+    (state) => state.interface.fileEditErrorVisible
   );
   const hash = useLocation().hash.substring(1);
   const dispatch = useAppDispatch();
@@ -78,7 +89,7 @@ const Files = () => {
   }, []);
 
   useEffect(() => {
-    if (files && files.length !== 0) {
+    if (files) {
       root.children = [];
       files.forEach((file: v1.File) => {
         if (!file.name.includes("/")) {
@@ -118,15 +129,15 @@ const Files = () => {
           currentDirectory.children.push(fileItem);
         }
       });
-      updateGridDate();
+      updateGridData();
     }
   }, [files]);
 
   useEffect(() => {
-    updateGridDate();
+    updateGridData();
   }, [currentDirectory]);
 
-  const updateGridDate = () => {
+  const updateGridData = () => {
     if (currentDirectory) {
       let gridData = currentDirectory.children;
       if (currentDirectory.parent) {
@@ -172,8 +183,43 @@ const Files = () => {
     setCellModesModel(newCellModesModel);
   };
 
+  const onRowEditFinished = async (id: GridRowId) => {
+    const newCellModesModel = { ...cellModesModel };
+    newCellModesModel[id] = {
+      name: {
+        mode: GridCellModes.View
+      }
+    };
+    setCellModesModel(newCellModesModel);
+    setLoading(true);
+    let path = "";
+    if (currentDirectory.parent) {
+      let directory: Directory = currentDirectory;
+      while (directory.parent) {
+        path = `${directory.name}/${path}`;
+        directory = directory.parent;
+      }
+    }
+    const successful = await updateFile({
+      id: id as string,
+      name: path
+        ? `${path}/${filenameState[id].value}`
+        : filenameState[id].value
+    });
+    if (successful) {
+      await updateFileList();
+      setLoading(false);
+    } else {
+      await updateFileList();
+      dispatch(setFileEditErrorVisible(true));
+      setLoading(false);
+    }
+  };
+
   const onDelete = async (id: string) => {
+    setLoading(true);
     const successful = await deleteFile({ id: id });
+    setLoading(false);
     if (successful) {
       await updateFileList();
     } else {
@@ -202,7 +248,21 @@ const Files = () => {
           severity="error"
           variant="filled"
         >
-          An error occurred while deleting the file!
+          An error occurred while deleting this file!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        autoHideDuration={4000}
+        onClose={() => dispatch(setFileEditErrorVisible(false))}
+        open={fileEditErrorVisible}
+      >
+        <Alert
+          onClose={() => dispatch(setFileEditErrorVisible(false))}
+          severity="error"
+          variant="filled"
+        >
+          An error occurred while editing this file!
         </Alert>
       </Snackbar>
       {gridData && (
@@ -212,7 +272,19 @@ const Files = () => {
             {
               field: "name",
               headerName: "Name",
-              flex: 2
+              flex: 2,
+              editable: true,
+              valueParser: (value, parameters) => {
+                if (parameters) {
+                  const newFilenameState = { ...filenameState };
+                  newFilenameState[parameters.id] = {
+                    original: parameters.value,
+                    value: value
+                  };
+                  setFilenameState(newFilenameState);
+                }
+                return value;
+              }
             },
             {
               field: "actions",
@@ -221,12 +293,22 @@ const Files = () => {
               flex: 0.5,
               getActions: ({ id }) => {
                 return [
-                  <GridActionsCellItem
-                    icon={<EditIcon />}
-                    key="edit"
-                    label="Edit"
-                    onClick={() => onRowEdit(id)}
-                  />,
+                  cellModesModel &&
+                  cellModesModel[id]?.name.mode === GridCellModes.Edit ? (
+                    <GridActionsCellItem
+                      icon={<CheckIcon />}
+                      key="submit-edit"
+                      label="Submit Changes"
+                      onClick={() => onRowEditFinished(id)}
+                    />
+                  ) : (
+                    <GridActionsCellItem
+                      icon={<EditIcon />}
+                      key="edit"
+                      label="Edit"
+                      onClick={() => onRowEdit(id)}
+                    />
+                  ),
                   <GridActionsCellItem
                     icon={<DeleteIcon />}
                     key="delete"
@@ -238,11 +320,12 @@ const Files = () => {
             }
           ]}
           components={{
+            LoadingOverlay: LinearProgress,
             NoRowsOverlay: CustomNoRowsOverlay,
             Toolbar: CustomToolbar
           }}
           experimentalFeatures={{ newEditingApi: true }}
-          loading={files === undefined}
+          loading={files === undefined || loading}
           onRowDoubleClick={onRowClick}
           rows={gridData}
         />
@@ -259,7 +342,12 @@ const CustomToolbar = () => {
       <GridToolbarDensitySelector />
       <GridToolbarExport />
       <Box sx={{ minWidth: "0.5rem", width: "5rem" }} />
-      <Button size="small" startIcon={<CreateNewFolderIcon />} variant="text">
+      <Button
+        onClick={() => dispatch(setFolderDialogVisible(true))}
+        size="small"
+        startIcon={<CreateNewFolderIcon />}
+        variant="text"
+      >
         New Folder
       </Button>
       <Button
