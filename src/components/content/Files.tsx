@@ -8,6 +8,7 @@ import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
   Alert,
   Box,
+  Breadcrumbs,
   Button,
   Dialog,
   DialogActions,
@@ -15,6 +16,7 @@ import {
   DialogContentText,
   DialogTitle,
   LinearProgress,
+  Link,
   Snackbar,
   styled,
   Tooltip,
@@ -39,6 +41,7 @@ import {
 import { v1 } from "moos-api";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 import { createFile, deleteFile, fetchFile, updateFile } from "../../logic/api";
 import { updateFileList } from "../../logic/files";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -48,6 +51,7 @@ import {
   setFolderDialogVisible,
   setUploadDialogVisible
 } from "../../redux/interfaceSlice";
+import LinkBehavior from "../LinkBehavior";
 
 interface FileTreeItem {
   id: string;
@@ -65,11 +69,12 @@ interface File extends FileTreeItem {
 interface Directory extends FileTreeItem {
   children: FileTreeItem[];
   parent?: Directory;
+  virtual?: boolean;
 }
 
 const root: Directory = {
   id: "/",
-  name: "Root",
+  name: "Home",
   children: []
 };
 
@@ -77,6 +82,7 @@ const Files = () => {
   const files = useAppSelector((state) => state.session.files);
   const [gridData, setGridData] = useState<GridRowsProp>();
   const [currentDirectory, setCurrentDirectory] = useState<Directory>(root);
+  const [breadcrumbs, setBreadcrumbs] = useState([root]);
   const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>();
   const [loading, setLoading] = useState(false);
   const [nameState, setNameState] = useState<{
@@ -85,13 +91,16 @@ const Files = () => {
   const [errorState, setErrorState] = useState<{
     [key: GridRowId]: boolean | undefined;
   }>({});
+  const folderDialogVisible = useAppSelector(
+    (state) => state.interface.folderDialogVisible
+  );
   const fileDeletionErrorVisible = useAppSelector(
     (state) => state.interface.fileDeletionErrorVisible
   );
   const fileEditErrorVisible = useAppSelector(
     (state) => state.interface.fileEditErrorVisible
   );
-  const hash = useLocation().hash.substring(1);
+  const hash = decodeURI(useLocation().hash).substring(1);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -151,37 +160,72 @@ const Files = () => {
   const updateGridData = () => {
     if (currentDirectory) {
       let gridData = currentDirectory.children;
+      let breadcrumbs: Directory[] = [];
+      let breadcrumb: Directory = currentDirectory;
       if (currentDirectory.parent) {
+        while (breadcrumb.parent) {
+          breadcrumbs.push(breadcrumb);
+          breadcrumb = breadcrumb.parent;
+        }
         const backToParent: Directory = {
           ...currentDirectory.parent,
-          name: ".."
+          name: "..",
+          virtual: true
         };
         gridData = [backToParent, ...gridData];
       }
+      breadcrumbs = breadcrumbs.reverse();
+      let path = "";
+      for (const breadcrumb of breadcrumbs) {
+        path = `${path}${breadcrumb.id}`;
+        breadcrumb.id = path;
+      }
+      setBreadcrumbs([root, ...breadcrumbs]);
       setGridData(gridData);
     }
   };
 
   useEffect(() => {
+    updateCurrentDirectory();
+  }, [hash]);
+
+  const updateCurrentDirectory = () => {
     const paths = hash.split("/");
     let currentDirectory: Directory = root;
     for (const path of paths) {
       const foundDirectory: Directory | undefined =
-        currentDirectory.children.find(
-          (child) => child.name === path
-        ) as Directory;
+        currentDirectory.children.find((child) => {
+          return child.id === path;
+        }) as Directory;
       if (!foundDirectory) {
         break;
       }
       currentDirectory = foundDirectory;
     }
     setCurrentDirectory(currentDirectory);
-  }, [hash]);
+  };
 
-  const onRowClick = async (rowParams: GridRowParams) => {
-    const fileTreeItem = currentDirectory.children.find(
-      (child) => child.id === rowParams.id
-    );
+  useEffect(() => {
+    if (folderDialogVisible) {
+      const alreadyExists =
+        currentDirectory.children.find((item) => item.id === "New Folder") !==
+        undefined;
+      const name = alreadyExists ? `${uuidv4()}` : "New Folder";
+      const newDirectory: Directory = {
+        id: name,
+        name: name,
+        children: [],
+        parent: currentDirectory
+      };
+      currentDirectory.children = [...currentDirectory.children, newDirectory];
+      updateGridData();
+      startItemEditing(newDirectory);
+      dispatch(setFolderDialogVisible(false));
+    }
+  }, [currentDirectory, folderDialogVisible]);
+
+  const onItemClick = async (rowParams: GridRowParams) => {
+    const fileTreeItem = rowParams.row;
     if (isFile(fileTreeItem)) {
       setLoading(true);
       try {
@@ -195,56 +239,99 @@ const Files = () => {
         setLoading(false);
       }
     } else if (isDirectory(fileTreeItem)) {
-      navigate(`/files/${fileTreeItem.id}`);
+      let path = "";
+      if (currentDirectory.parent && !fileTreeItem.virtual) {
+        let directory: Directory = currentDirectory;
+        while (directory.parent) {
+          path = `${directory.name}/${path}`;
+          directory = directory.parent;
+        }
+      }
+      navigate(
+        path ? `/files#${path}${fileTreeItem.id}` : `/files#${fileTreeItem.id}`
+      );
     } else {
       console.error("Not Found.");
     }
   };
 
-  const onRowEdit = (id: GridRowId) => {
+  const startItemEditing = (item: FileTreeItem) => {
+    const newNameState = { ...nameState };
+    newNameState[item.id] = {
+      original: item.name,
+      value: item.name
+    };
+    setNameState(newNameState);
+    changeEditMode(item.id, GridCellModes.Edit);
+  };
+
+  const stopItemEditing = (id: GridRowId) => {
+    changeEditMode(id, GridCellModes.View);
+  };
+
+  const changeEditMode = (id: GridRowId, mode: GridCellModes) => {
     const newCellModesModel = { ...cellModesModel };
     newCellModesModel[id] = {
       name: {
-        mode: GridCellModes.Edit
+        mode: mode
       }
     };
     setCellModesModel(newCellModesModel);
   };
 
-  const onRowEditFinished = async (id: GridRowId) => {
-    if (errorState[id]) {
+  const onItemEditFinished = async (item: FileTreeItem) => {
+    if (errorState[item.id]) {
       return dispatch(setFileEditErrorVisible(true));
     }
-    const newCellModesModel = { ...cellModesModel };
-    newCellModesModel[id] = {
-      name: {
-        mode: GridCellModes.View
-      }
-    };
-    setCellModesModel(newCellModesModel);
-    setLoading(true);
-    let path = "";
-    if (currentDirectory.parent) {
-      let directory: Directory = currentDirectory;
-      while (directory.parent) {
-        path = `${directory.name}/${path}`;
-        directory = directory.parent;
-      }
+    if (
+      currentDirectory.children.filter(
+        (child) =>
+          !!nameState[item.id] &&
+          child.name === nameState[item.id].value &&
+          child.id !== item.id
+      ).length !== 0
+    ) {
+      return dispatch(setFileEditErrorVisible(true));
     }
-    try {
-      const successful = await updateFile({
-        id: id as string,
-        name: path ? `${path}/${nameState[id].value}` : nameState[id].value
-      });
-      if (!successful) {
-        throw new Error("Failed to update file");
+    if (isFile(item)) {
+      stopItemEditing(item.id);
+      setLoading(true);
+      let path = "";
+      if (currentDirectory.parent) {
+        let directory: Directory = currentDirectory;
+        while (directory.parent) {
+          path = `${directory.name}/${path}`;
+          directory = directory.parent;
+        }
       }
-      await updateFileList();
-      setLoading(false);
-    } catch (error) {
-      await updateFileList();
-      dispatch(setFileEditErrorVisible(true));
-      setLoading(false);
+      try {
+        const successful = await updateFile({
+          id: item.id,
+          name: path
+            ? `${path}/${nameState[item.id].value}`
+            : nameState[item.id].value
+        });
+        if (!successful) {
+          throw new Error("Failed to update file");
+        }
+        await updateFileList();
+        setLoading(false);
+      } catch (error) {
+        await updateFileList();
+        dispatch(setFileEditErrorVisible(true));
+        setLoading(false);
+      }
+    } else if (isDirectory(item)) {
+      if (item.children.length > 0) {
+        return dispatch(setFileEditErrorVisible(true));
+      }
+      stopItemEditing(item.id);
+      const value = nameState[item.id].value;
+      item.name = value;
+      item.id = value;
+      setTimeout(() => updateGridData(), 1);
+    } else {
+      return dispatch(setFileEditErrorVisible(true));
     }
   };
 
@@ -269,7 +356,7 @@ const Files = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        minHeight: "30rem"
+        minHeight: "31.5rem"
       }}
     >
       <UploadDialog currentDirectory={currentDirectory} />
@@ -301,6 +388,23 @@ const Files = () => {
           An error occurred while editing this file!
         </Alert>
       </Snackbar>
+      {breadcrumbs && (
+        <Breadcrumbs maxItems={2} sx={{ margin: 2 }}>
+          {breadcrumbs.map((breadcrumb) => {
+            return (
+              <Link
+                color="inherit"
+                component={LinkBehavior}
+                href={`#${breadcrumb.id}`}
+                key={breadcrumb.id}
+                underline="hover"
+              >
+                {breadcrumb.name}
+              </Link>
+            );
+          })}
+        </Breadcrumbs>
+      )}
       {gridData && (
         <DataGrid
           cellModesModel={cellModesModel}
@@ -342,10 +446,9 @@ const Files = () => {
               type: "actions",
               headerName: "Actions",
               flex: 0.5,
-              getActions: ({ id }) => {
-                return isFile(
-                  currentDirectory.children.find((child) => child.id === id)
-                )
+              getActions: ({ id, row }) => {
+                const item: FileTreeItem = row;
+                return isFile(item)
                   ? [
                       cellModesModel &&
                       cellModesModel[id]?.name.mode === GridCellModes.Edit ? (
@@ -353,14 +456,14 @@ const Files = () => {
                           icon={<CheckIcon />}
                           key="submit-edit"
                           label="Submit Changes"
-                          onClick={() => onRowEditFinished(id)}
+                          onClick={() => onItemEditFinished(item)}
                         />
                       ) : (
                         <GridActionsCellItem
                           icon={<EditIcon />}
                           key="edit"
                           label="Edit"
-                          onClick={() => onRowEdit(id)}
+                          onClick={() => startItemEditing(item)}
                         />
                       ),
                       <GridActionsCellItem
@@ -369,6 +472,25 @@ const Files = () => {
                         label="Delete"
                         onClick={() => onDelete(id as string)}
                       />
+                    ]
+                  : isDirectory(item) && !item.virtual
+                  ? [
+                      cellModesModel &&
+                      cellModesModel[id]?.name.mode === GridCellModes.Edit ? (
+                        <GridActionsCellItem
+                          icon={<CheckIcon />}
+                          key="submit-edit"
+                          label="Submit Changes"
+                          onClick={() => onItemEditFinished(item)}
+                        />
+                      ) : (
+                        <GridActionsCellItem
+                          icon={<EditIcon />}
+                          key="edit"
+                          label="Edit"
+                          onClick={() => startItemEditing(item)}
+                        />
+                      )
                     ]
                   : [];
               }
@@ -382,10 +504,10 @@ const Files = () => {
           experimentalFeatures={{ newEditingApi: true }}
           hideFooterSelectedRowCount
           loading={files === undefined || loading}
-          onCellEditStart={(params, event) =>
+          onCellEditStart={(_params, event) =>
             (event.defaultMuiPrevented = true)
           }
-          onRowDoubleClick={onRowClick}
+          onRowDoubleClick={onItemClick}
           rows={gridData}
         />
       )}
@@ -494,15 +616,17 @@ const UploadDialog = ({
 
   const handleUpload = async () => {
     if (file) {
+      let path = "";
+      if (currentDirectory.parent) {
+        let directory: Directory = currentDirectory;
+        while (directory.parent) {
+          path = `${directory.name}/${path}`;
+          directory = directory.parent;
+        }
+      }
       try {
         const response = await createFile({
-          name: `${
-            currentDirectory
-              ? currentDirectory === root
-                ? ""
-                : currentDirectory.id
-              : ""
-          }${file.name}`
+          name: path ? `${path}/${file.name}` : file.name
         });
         if (!response) {
           throw new Error("Failed to create file");
