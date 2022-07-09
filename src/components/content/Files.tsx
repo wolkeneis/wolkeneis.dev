@@ -250,12 +250,16 @@ const Files = () => {
 
   const onDelete = async (id: string) => {
     setLoading(true);
-    const successful = await deleteFile({ id: id });
-    setLoading(false);
-    if (successful) {
+    try {
+      const successful = await deleteFile({ id: id });
+      if (!successful) {
+        throw new Error("Failed to delete file");
+      }
       await updateFileList();
-    } else {
+      setLoading(false);
+    } catch (error) {
       dispatch(setFileDeletionErrorVisible(true));
+      setLoading(false);
     }
   };
 
@@ -378,6 +382,9 @@ const Files = () => {
           experimentalFeatures={{ newEditingApi: true }}
           hideFooterSelectedRowCount
           loading={files === undefined || loading}
+          onCellEditStart={(params, event) =>
+            (event.defaultMuiPrevented = true)
+          }
           onRowDoubleClick={onRowClick}
           rows={gridData}
         />
@@ -487,16 +494,19 @@ const UploadDialog = ({
 
   const handleUpload = async () => {
     if (file) {
-      const response = await createFile({
-        name: `${
-          currentDirectory
-            ? currentDirectory === root
-              ? ""
-              : currentDirectory.id
-            : ""
-        }${file.name}`
-      });
-      if (response) {
+      try {
+        const response = await createFile({
+          name: `${
+            currentDirectory
+              ? currentDirectory === root
+                ? ""
+                : currentDirectory.id
+              : ""
+          }${file.name}`
+        });
+        if (!response) {
+          throw new Error("Failed to create file");
+        }
         try {
           const abortController = new AbortController();
           setTimeout(() => abortController.abort(), response.ttl);
@@ -511,6 +521,8 @@ const UploadDialog = ({
         } catch (error) {
           await deleteFile({ id: response.id });
         }
+      } catch (error) {
+        console.error(error);
       }
     }
   };
