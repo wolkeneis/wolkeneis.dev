@@ -39,7 +39,7 @@ import {
 import { v1 } from "moos-api";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { createFile, deleteFile, updateFile } from "../../logic/api";
+import { createFile, deleteFile, fetchFile, updateFile } from "../../logic/api";
 import { updateFileList } from "../../logic/files";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -178,8 +178,27 @@ const Files = () => {
     setCurrentDirectory(currentDirectory);
   }, [hash]);
 
-  const onRowClick = (rowParams: GridRowParams) => {
-    navigate(`/files#${rowParams?.id}`);
+  const onRowClick = async (rowParams: GridRowParams) => {
+    const fileTreeItem = currentDirectory.children.find(
+      (child) => child.id === rowParams.id
+    );
+    if (isFile(fileTreeItem)) {
+      setLoading(true);
+      try {
+        const response = await fetchFile({ id: fileTreeItem.id });
+        if (!response) {
+          throw new Error("File not found");
+        }
+        setLoading(false);
+        window.open(response?.url, "_blank");
+      } catch (error) {
+        setLoading(false);
+      }
+    } else if (isDirectory(fileTreeItem)) {
+      navigate(`/files/${fileTreeItem.id}`);
+    } else {
+      console.error("Not Found.");
+    }
   };
 
   const onRowEdit = (id: GridRowId) => {
