@@ -1,7 +1,9 @@
 import CheckIcon from "@mui/icons-material/Check";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import ErrorIcon from "@mui/icons-material/Error";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
   Alert,
@@ -14,6 +16,10 @@ import {
   DialogTitle,
   LinearProgress,
   Snackbar,
+  styled,
+  Tooltip,
+  tooltipClasses,
+  TooltipProps,
   Typography
 } from "@mui/material";
 import {
@@ -21,6 +27,8 @@ import {
   GridActionsCellItem,
   GridCellModes,
   GridCellModesModel,
+  GridEditInputCell,
+  GridRenderEditCellParams,
   GridRowId,
   GridRowParams,
   GridRowsProp,
@@ -71,8 +79,11 @@ const Files = () => {
   const [currentDirectory, setCurrentDirectory] = useState<Directory>(root);
   const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>();
   const [loading, setLoading] = useState(false);
-  const [filenameState, setFilenameState] = useState<{
+  const [nameState, setNameState] = useState<{
     [key: GridRowId]: { original: string; value: string };
+  }>({});
+  const [errorState, setErrorState] = useState<{
+    [key: GridRowId]: boolean | undefined;
   }>({});
   const fileDeletionErrorVisible = useAppSelector(
     (state) => state.interface.fileDeletionErrorVisible
@@ -141,13 +152,11 @@ const Files = () => {
     if (currentDirectory) {
       let gridData = currentDirectory.children;
       if (currentDirectory.parent) {
-        gridData = [
-          {
-            ...currentDirectory.parent,
-            name: ".."
-          },
-          ...gridData
-        ];
+        const backToParent: Directory = {
+          ...currentDirectory.parent,
+          name: ".."
+        };
+        gridData = [backToParent, ...gridData];
       }
       setGridData(gridData);
     }
@@ -184,6 +193,9 @@ const Files = () => {
   };
 
   const onRowEditFinished = async (id: GridRowId) => {
+    if (errorState[id]) {
+      return dispatch(setFileEditErrorVisible(true));
+    }
     const newCellModesModel = { ...cellModesModel };
     newCellModesModel[id] = {
       name: {
@@ -200,16 +212,17 @@ const Files = () => {
         directory = directory.parent;
       }
     }
-    const successful = await updateFile({
-      id: id as string,
-      name: path
-        ? `${path}/${filenameState[id].value}`
-        : filenameState[id].value
-    });
-    if (successful) {
+    try {
+      const successful = await updateFile({
+        id: id as string,
+        name: path ? `${path}/${nameState[id].value}` : nameState[id].value
+      });
+      if (!successful) {
+        throw new Error("Failed to update file");
+      }
       await updateFileList();
       setLoading(false);
-    } else {
+    } catch (error) {
       await updateFileList();
       dispatch(setFileEditErrorVisible(true));
       setLoading(false);
@@ -274,14 +287,29 @@ const Files = () => {
               headerName: "Name",
               flex: 2,
               editable: true,
+              renderEditCell: renderEditName,
+              preProcessEditCellProps(parameters) {
+                const error: boolean | undefined =
+                  parameters.props.value.includes("/");
+                const newErrorState = { ...errorState };
+                newErrorState[parameters.id] = error;
+                setErrorState(newErrorState);
+                return {
+                  ...parameters.props,
+                  error: !!error,
+                  errorMessage: error
+                    ? "File names must not contain '/'"
+                    : undefined
+                };
+              },
               valueParser: (value, parameters) => {
                 if (parameters) {
-                  const newFilenameState = { ...filenameState };
-                  newFilenameState[parameters.id] = {
+                  const newNameState = { ...nameState };
+                  newNameState[parameters.id] = {
                     original: parameters.value,
                     value: value
                   };
-                  setFilenameState(newFilenameState);
+                  setNameState(newNameState);
                 }
                 return value;
               }
@@ -292,30 +320,34 @@ const Files = () => {
               headerName: "Actions",
               flex: 0.5,
               getActions: ({ id }) => {
-                return [
-                  cellModesModel &&
-                  cellModesModel[id]?.name.mode === GridCellModes.Edit ? (
-                    <GridActionsCellItem
-                      icon={<CheckIcon />}
-                      key="submit-edit"
-                      label="Submit Changes"
-                      onClick={() => onRowEditFinished(id)}
-                    />
-                  ) : (
-                    <GridActionsCellItem
-                      icon={<EditIcon />}
-                      key="edit"
-                      label="Edit"
-                      onClick={() => onRowEdit(id)}
-                    />
-                  ),
-                  <GridActionsCellItem
-                    icon={<DeleteIcon />}
-                    key="delete"
-                    label="Delete"
-                    onClick={() => onDelete(id as string)}
-                  />
-                ];
+                return isFile(
+                  currentDirectory.children.find((child) => child.id === id)
+                )
+                  ? [
+                      cellModesModel &&
+                      cellModesModel[id]?.name.mode === GridCellModes.Edit ? (
+                        <GridActionsCellItem
+                          icon={<CheckIcon />}
+                          key="submit-edit"
+                          label="Submit Changes"
+                          onClick={() => onRowEditFinished(id)}
+                        />
+                      ) : (
+                        <GridActionsCellItem
+                          icon={<EditIcon />}
+                          key="edit"
+                          label="Edit"
+                          onClick={() => onRowEdit(id)}
+                        />
+                      ),
+                      <GridActionsCellItem
+                        icon={<DeleteIcon />}
+                        key="delete"
+                        label="Delete"
+                        onClick={() => onDelete(id as string)}
+                      />
+                    ]
+                  : [];
               }
             }
           ]}
@@ -325,6 +357,7 @@ const Files = () => {
             Toolbar: CustomToolbar
           }}
           experimentalFeatures={{ newEditingApi: true }}
+          hideFooterSelectedRowCount
           loading={files === undefined || loading}
           onRowDoubleClick={onRowClick}
           rows={gridData}
@@ -333,6 +366,52 @@ const Files = () => {
     </Box>
   );
 };
+
+const isDirectory = (entry?: FileTreeItem): entry is Directory => {
+  return !!entry && (entry as Directory).children !== undefined;
+};
+
+const isFile = (entry?: FileTreeItem): entry is File => {
+  return !!entry && !isDirectory(entry) && (entry as File).owner !== undefined;
+};
+
+const renderEditName = (parameters: GridRenderEditCellParams) => {
+  return <NameEditInputCell {...parameters} />;
+};
+
+const NameEditInputCell = ({
+  errorMessage,
+  ...parameters
+}: GridRenderEditCellParams) => {
+  const { error } = parameters;
+
+  return (
+    <>
+      <GridEditInputCell {...parameters} />
+      <StyledTooltip
+        open={!!error}
+        title={`${errorMessage ?? "Everything seems correct."}`}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", paddingX: 1 }}>
+          {!!error ? (
+            <ErrorIcon color="error" />
+          ) : (
+            <CheckCircleOutlineIcon color="success" />
+          )}
+        </Box>
+      </StyledTooltip>
+    </>
+  );
+};
+
+const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText
+  }
+}));
 
 const CustomToolbar = () => {
   const dispatch = useAppDispatch();
