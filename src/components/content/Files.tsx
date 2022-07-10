@@ -123,30 +123,29 @@ const Files = () => {
         } else {
           const pathParts = file.name.split("/");
           const fileName = pathParts.pop();
-          let currentDirectory: Directory = root;
+          let directory: Directory = root;
           for (const pathPart of pathParts) {
-            let foundDirectory: Directory | undefined =
-              currentDirectory.children.find(
-                (child) => child.name === pathPart
-              ) as Directory;
+            let foundDirectory: Directory | undefined = directory.children.find(
+              (child) => child.name === pathPart
+            ) as Directory;
             if (!foundDirectory) {
               foundDirectory = {
-                path: currentDirectory.path
-                  ? `${currentDirectory.path}/${currentDirectory.id}`
-                  : `${currentDirectory.id}`,
+                path: directory.path
+                  ? `${directory.path}/${directory.id}`
+                  : `${directory.id}`,
                 id: pathPart,
                 name: pathPart,
                 children: []
               };
-              foundDirectory.parent = currentDirectory;
-              currentDirectory.children.push(foundDirectory);
+              foundDirectory.parent = directory;
+              directory.children.push(foundDirectory);
             }
-            currentDirectory = foundDirectory;
+            directory = foundDirectory;
           }
           const fileItem: File = {
-            path: currentDirectory.path
-              ? `${currentDirectory.path}/${currentDirectory.id}`
-              : `${currentDirectory.id}`,
+            path: directory.path
+              ? `${directory.path}/${directory.id}`
+              : `${directory.id}`,
             id: file.id,
             name: fileName ?? file.name,
             owner: file.owner,
@@ -155,7 +154,7 @@ const Files = () => {
             creationDate: file.creationDate,
             lastModified: file.lastModified
           };
-          currentDirectory.children.push(fileItem);
+          directory.children.push(fileItem);
         }
       });
       updateCurrentDirectory();
@@ -200,18 +199,23 @@ const Files = () => {
         ? hash.substring(`${root.id}/`.length)
         : hash
     ).split("/");
-    let currentDirectory: Directory = root;
+    let directory: Directory = root;
     for (const pathPart of pathParts) {
-      const foundDirectory: Directory | undefined =
-        currentDirectory.children.find((child) => {
+      const foundDirectory: Directory | undefined = directory.children.find(
+        (child) => {
           return child.id === pathPart;
-        }) as Directory;
+        }
+      ) as Directory;
       if (!foundDirectory) {
         break;
       }
-      currentDirectory = foundDirectory;
+      directory = foundDirectory;
     }
-    setCurrentDirectory(currentDirectory);
+    if (currentDirectory !== directory) {
+      setCurrentDirectory(directory);
+    } else {
+      updateGridData();
+    }
   };
 
   useEffect(() => {
