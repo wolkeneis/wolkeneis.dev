@@ -75,7 +75,7 @@ interface Directory extends FileTreeItem {
 
 const root: Directory = {
   path: "",
-  id: "/",
+  id: ">",
   name: "Home",
   children: []
 };
@@ -158,7 +158,7 @@ const Files = () => {
           currentDirectory.children.push(fileItem);
         }
       });
-      updateGridData();
+      updateCurrentDirectory();
     }
   }, [files]);
 
@@ -195,9 +195,11 @@ const Files = () => {
   }, [hash]);
 
   const updateCurrentDirectory = () => {
-    const pathParts = (hash.startsWith("/") ? hash.substring(1) : hash).split(
-      "/"
-    );
+    const pathParts = (
+      hash.startsWith(`${root.id}/`)
+        ? hash.substring(`${root.id}/`.length)
+        : hash
+    ).split("/");
     let currentDirectory: Directory = root;
     for (const pathPart of pathParts) {
       const foundDirectory: Directory | undefined =
@@ -249,13 +251,8 @@ const Files = () => {
         setLoading(false);
       }
     } else if (isDirectory(fileTreeItem)) {
-      console.log(fileTreeItem);
       navigate(
-        !fileTreeItem.virtual
-          ? currentDirectory.path
-            ? `/files#${currentDirectory.path}/${fileTreeItem.id}`
-            : `/files#${fileTreeItem.id}`
-          : fileTreeItem.path
+        fileTreeItem.path
           ? `/files#${fileTreeItem.path}/${fileTreeItem.id}`
           : `/files#${fileTreeItem.id}`
       );
@@ -396,7 +393,11 @@ const Files = () => {
               <Link
                 color="inherit"
                 component={LinkBehavior}
-                href={`#${breadcrumb.id}`}
+                href={
+                  breadcrumb.path
+                    ? `#${breadcrumb.path}/${breadcrumb.id}`
+                    : `#${breadcrumb.id}`
+                }
                 key={breadcrumb.id}
                 underline="hover"
               >
@@ -418,7 +419,9 @@ const Files = () => {
               renderEditCell: renderEditName,
               preProcessEditCellProps(parameters) {
                 const error: boolean | undefined =
-                  parameters.props.value.includes("/");
+                  parameters.props.value.includes("/") ||
+                  parameters.props.value.includes("\\") ||
+                  parameters.props.value.includes(">");
                 const newErrorState = { ...errorState };
                 newErrorState[parameters.id] = error;
                 setErrorState(newErrorState);
@@ -426,7 +429,7 @@ const Files = () => {
                   ...parameters.props,
                   error: !!error,
                   errorMessage: error
-                    ? "File names must not contain '/'"
+                    ? "File names must not contain '/', '\\' or '>'"
                     : undefined
                 };
               },
@@ -510,6 +513,7 @@ const Files = () => {
           }
           onRowDoubleClick={onItemClick}
           rows={gridData}
+          sx={{ userSelect: "none" }}
         />
       )}
     </Box>
@@ -618,10 +622,13 @@ const UploadDialog = ({
   const handleUpload = async () => {
     if (file) {
       try {
+        const absoluteFilepath = currentDirectory.path
+          ? `${currentDirectory.path}/${currentDirectory.id}/${file.name}`
+          : `${currentDirectory.id}/${file.name}`;
         const response = await createFile({
-          name: currentDirectory.path
-            ? `${currentDirectory.path}/${file.name}`
-            : file.name
+          name: absoluteFilepath.startsWith(`${root.id}/`)
+            ? absoluteFilepath.substring(`${root.id}/`.length)
+            : absoluteFilepath
         });
         if (!response) {
           throw new Error("Failed to create file");
