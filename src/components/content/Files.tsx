@@ -54,6 +54,7 @@ import {
 import LinkBehavior from "../LinkBehavior";
 
 interface FileTreeItem {
+  path: string;
   id: string;
   name: string;
 }
@@ -73,6 +74,7 @@ interface Directory extends FileTreeItem {
 }
 
 const root: Directory = {
+  path: "",
   id: "/",
   name: "Home",
   children: []
@@ -114,22 +116,26 @@ const Files = () => {
       files.forEach((file: v1.File) => {
         if (!file.name.includes("/")) {
           const fileItem: File = {
-            ...file
+            ...file,
+            path: "/"
           };
           root.children.push(fileItem);
         } else {
-          const paths = file.name.split("/");
-          const fileName = paths.pop();
+          const pathParts = file.name.split("/");
+          const fileName = pathParts.pop();
           let currentDirectory: Directory = root;
-          for (const path of paths) {
+          for (const pathPart of pathParts) {
             let foundDirectory: Directory | undefined =
               currentDirectory.children.find(
-                (child) => child.name === path
+                (child) => child.name === pathPart
               ) as Directory;
             if (!foundDirectory) {
               foundDirectory = {
-                id: path,
-                name: path,
+                path: currentDirectory.path
+                  ? `${currentDirectory.path}/${currentDirectory.id}`
+                  : `${currentDirectory.id}`,
+                id: pathPart,
+                name: pathPart,
                 children: []
               };
               foundDirectory.parent = currentDirectory;
@@ -138,6 +144,9 @@ const Files = () => {
             currentDirectory = foundDirectory;
           }
           const fileItem: File = {
+            path: currentDirectory.path
+              ? `${currentDirectory.path}/${currentDirectory.id}`
+              : `${currentDirectory.id}`,
             id: file.id,
             name: fileName ?? file.name,
             owner: file.owner,
@@ -174,13 +183,9 @@ const Files = () => {
         };
         gridData = [backToParent, ...gridData];
       }
+      breadcrumbs.push(root);
       breadcrumbs = breadcrumbs.reverse();
-      let path = "";
-      for (const breadcrumb of breadcrumbs) {
-        path = `${path}${breadcrumb.id}`;
-        breadcrumb.id = path;
-      }
-      setBreadcrumbs([root, ...breadcrumbs]);
+      setBreadcrumbs(breadcrumbs);
       setGridData(gridData);
     }
   };
@@ -190,12 +195,14 @@ const Files = () => {
   }, [hash]);
 
   const updateCurrentDirectory = () => {
-    const paths = hash.split("/");
+    const pathParts = (hash.startsWith("/") ? hash.substring(1) : hash).split(
+      "/"
+    );
     let currentDirectory: Directory = root;
-    for (const path of paths) {
+    for (const pathPart of pathParts) {
       const foundDirectory: Directory | undefined =
         currentDirectory.children.find((child) => {
-          return child.id === path;
+          return child.id === pathPart;
         }) as Directory;
       if (!foundDirectory) {
         break;
@@ -212,6 +219,9 @@ const Files = () => {
         undefined;
       const name = alreadyExists ? `${uuidv4()}` : "New Folder";
       const newDirectory: Directory = {
+        path: currentDirectory.path
+          ? `${currentDirectory.path}/${currentDirectory.id}`
+          : `${currentDirectory.id}`,
         id: name,
         name: name,
         children: [],
@@ -239,16 +249,15 @@ const Files = () => {
         setLoading(false);
       }
     } else if (isDirectory(fileTreeItem)) {
-      let path = "";
-      if (currentDirectory.parent && !fileTreeItem.virtual) {
-        let directory: Directory = currentDirectory;
-        while (directory.parent) {
-          path = `${directory.name}/${path}`;
-          directory = directory.parent;
-        }
-      }
+      console.log(fileTreeItem);
       navigate(
-        path ? `/files#${path}${fileTreeItem.id}` : `/files#${fileTreeItem.id}`
+        !fileTreeItem.virtual
+          ? currentDirectory.path
+            ? `/files#${currentDirectory.path}/${fileTreeItem.id}`
+            : `/files#${fileTreeItem.id}`
+          : fileTreeItem.path
+          ? `/files#${fileTreeItem.path}/${fileTreeItem.id}`
+          : `/files#${fileTreeItem.id}`
       );
     } else {
       console.error("Not Found.");
@@ -296,19 +305,11 @@ const Files = () => {
     if (isFile(item)) {
       stopItemEditing(item.id);
       setLoading(true);
-      let path = "";
-      if (currentDirectory.parent) {
-        let directory: Directory = currentDirectory;
-        while (directory.parent) {
-          path = `${directory.name}/${path}`;
-          directory = directory.parent;
-        }
-      }
       try {
         const successful = await updateFile({
           id: item.id,
-          name: path
-            ? `${path}/${nameState[item.id].value}`
+          name: item.path
+            ? `${item.path}/${nameState[item.id].value}`
             : nameState[item.id].value
         });
         if (!successful) {
@@ -616,17 +617,11 @@ const UploadDialog = ({
 
   const handleUpload = async () => {
     if (file) {
-      let path = "";
-      if (currentDirectory.parent) {
-        let directory: Directory = currentDirectory;
-        while (directory.parent) {
-          path = `${directory.name}/${path}`;
-          directory = directory.parent;
-        }
-      }
       try {
         const response = await createFile({
-          name: path ? `${path}/${file.name}` : file.name
+          name: currentDirectory.path
+            ? `${currentDirectory.path}/${file.name}`
+            : file.name
         });
         if (!response) {
           throw new Error("Failed to create file");
