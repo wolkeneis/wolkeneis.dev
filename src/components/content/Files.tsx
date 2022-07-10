@@ -4,6 +4,8 @@ import CreateNewFolderIcon from "@mui/icons-material/CreateNewFolder";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import ErrorIcon from "@mui/icons-material/Error";
+import FolderIcon from "@mui/icons-material/Folder";
+import FileIcon from "@mui/icons-material/InsertDriveFile";
 import UploadFileIcon from "@mui/icons-material/UploadFile";
 import {
   Alert,
@@ -22,7 +24,8 @@ import {
   Tooltip,
   tooltipClasses,
   TooltipProps,
-  Typography
+  Typography,
+  useTheme
 } from "@mui/material";
 import {
   DataGrid,
@@ -105,6 +108,7 @@ const Files = () => {
   const hash = decodeURI(useLocation().hash).substring(1);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const theme = useTheme();
 
   useEffect(() => {
     updateFileList();
@@ -415,6 +419,23 @@ const Files = () => {
         <DataGrid
           cellModesModel={cellModesModel}
           columns={[
+            {
+              field: "type",
+              headerName: "",
+              disableColumnMenu: true,
+              hideSortIcons: true,
+              disableExport: true,
+              disableReorder: true,
+              flex: 0.25,
+              renderCell: (parameters) => {
+                const item: FileTreeItem = parameters.row;
+                return isFile(item) ? (
+                  <FileIcon sx={{ color: theme.palette.file.main }} />
+                ) : (
+                  <FolderIcon sx={{ color: theme.palette.folder.main }} />
+                );
+              }
+            },
             {
               field: "name",
               headerName: "Name",
