@@ -22,7 +22,7 @@ const LoginPage = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: mobile ? 0 : "18%"
+        marginTop: mobile ? 0 : "12%"
       }}
     >
       <Card

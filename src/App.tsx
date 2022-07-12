@@ -1,3 +1,4 @@
+import { PaletteColor, PaletteColorOptions } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useEffect, useState } from "react";
@@ -10,9 +11,26 @@ import "./logic/firebase";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { selectTheme, setDrawerOpen, setMobile } from "./redux/interfaceSlice";
 
+declare module "@mui/material/styles" {
+  interface Palette {
+    folder: PaletteColor;
+    file: PaletteColor;
+  }
+  interface PaletteOptions {
+    folder: PaletteColorOptions;
+    file: PaletteColorOptions;
+  }
+}
+
 const darkTheme = createTheme({
   palette: {
-    mode: "dark"
+    mode: "dark",
+    folder: {
+      main: "#ff9800"
+    },
+    file: {
+      main: "#dddddd"
+    }
   },
   components: {
     MuiButtonBase: {
@@ -25,7 +43,13 @@ const darkTheme = createTheme({
 
 const lightTheme = createTheme({
   palette: {
-    mode: "light"
+    mode: "light",
+    folder: {
+      main: "#ff9800"
+    },
+    file: {
+      main: "#dddddd"
+    }
   },
   components: {
     MuiButtonBase: {
