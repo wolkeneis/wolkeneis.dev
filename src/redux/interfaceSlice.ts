@@ -32,37 +32,49 @@ export const interfaceSlice: Slice = createSlice({
     ) => {
       state.theme = action.payload;
     },
-    toggleTheme: (state) => {
+    toggleTheme: (state: InterfaceState) => {
       state.theme = state.theme === "dark-theme" ? "light-theme" : "dark-theme";
     },
 
-    setMobile: (state, action: PayloadAction<boolean>) => {
+    setMobile: (state: InterfaceState, action: PayloadAction<boolean>) => {
       state.mobile = action.payload;
     },
 
-    setDrawerOpen: (state, action: PayloadAction<boolean>) => {
+    setDrawerOpen: (state: InterfaceState, action: PayloadAction<boolean>) => {
       state.drawerOpen = action.payload;
     },
-    toggleDrawer: (state) => {
+    toggleDrawer: (state: InterfaceState) => {
       state.drawerOpen = !state.drawerOpen;
     },
-    setDrawerWidth: (state, action: PayloadAction<number>) => {
+    setDrawerWidth: (state: InterfaceState, action: PayloadAction<number>) => {
       state.drawerWidth = action.payload;
     },
 
-    setUploadDialogVisible(state, action: PayloadAction<boolean>) {
+    setUploadDialogVisible(
+      state: InterfaceState,
+      action: PayloadAction<boolean>
+    ) {
       state.uploadDialogVisible = action.payload;
     },
 
-    setFolderDialogVisible(state, action: PayloadAction<boolean>) {
+    setFolderDialogVisible(
+      state: InterfaceState,
+      action: PayloadAction<boolean>
+    ) {
       state.folderDialogVisible = action.payload;
     },
 
-    setFileDeletionErrorVisible(state, action: PayloadAction<boolean>) {
+    setFileDeletionErrorVisible(
+      state: InterfaceState,
+      action: PayloadAction<boolean>
+    ) {
       state.fileDeletionErrorVisible = action.payload;
     },
 
-    setFileEditErrorVisible(state, action: PayloadAction<boolean>) {
+    setFileEditErrorVisible(
+      state: InterfaceState,
+      action: PayloadAction<boolean>
+    ) {
       state.fileEditErrorVisible = action.payload;
     }
   }

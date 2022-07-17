@@ -17,15 +17,24 @@ export const sessionSlice: Slice = createSlice({
   name: "session",
   initialState,
   reducers: {
-    setProfile: (state, action: PayloadAction<v1.UserProfile | null>) => {
+    setProfile: (
+      state: SessionState,
+      action: PayloadAction<v1.UserProfile | null>
+    ) => {
       state.profile = action.payload;
     },
 
-    setFiles: (state, action: PayloadAction<v1.File[] | null>) => {
+    setFiles: (
+      state: SessionState,
+      action: PayloadAction<v1.File[] | null>
+    ) => {
       state.files = action.payload;
     },
 
-    setCSRFToken: (state, action: PayloadAction<string | undefined>) => {
+    setCSRFToken: (
+      state: SessionState,
+      action: PayloadAction<string | undefined>
+    ) => {
       state.csrfToken = action.payload;
     }
   }
