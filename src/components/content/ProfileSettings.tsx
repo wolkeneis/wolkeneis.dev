@@ -1,3 +1,4 @@
+import LockIcon from "@mui/icons-material/Lock";
 import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Avatar,
@@ -9,8 +10,12 @@ import {
   CardHeader,
   CardMedia,
   CircularProgress,
-  FormControlLabel,
-  Switch
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Switch,
+  Typography
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -99,15 +104,34 @@ const ProfileSettings = () => {
                   }/600`}
                 />
                 <CardContent>
-                  <FormControlLabel
-                    control={
+                  <List
+                    subheader={
+                      <Typography sx={{ marginX: 2 }} variant="h6">
+                        Settings
+                      </Typography>
+                    }
+                    sx={{
+                      width: "100%"
+                    }}
+                  >
+                    <ListItem>
+                      <ListItemIcon>
+                        <LockIcon />
+                      </ListItemIcon>
+                      <ListItemText
+                        id="settings-private-account"
+                        primary="Private Account"
+                      />
                       <Switch
                         checked={privateProfile}
+                        edge="end"
+                        inputProps={{
+                          "aria-labelledby": "settings-private-account"
+                        }}
                         onChange={onPrivacyChange}
                       />
-                    }
-                    label="Private Account"
-                  />
+                    </ListItem>
+                  </List>
                 </CardContent>
                 <CardActions>
                   <Button
