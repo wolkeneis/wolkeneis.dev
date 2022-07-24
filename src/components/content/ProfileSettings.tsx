@@ -14,8 +14,6 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListSubheader,
-  Paper,
   Switch,
   Typography
 } from "@mui/material";
