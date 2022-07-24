@@ -1,13 +1,13 @@
 import AppsIcon from "@mui/icons-material/Apps";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DescriptionIcon from "@mui/icons-material/Description";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import {
   Divider,
   IconButton,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   styled,
@@ -15,14 +15,15 @@ import {
   Typography,
   useTheme
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { toggleDrawer } from "../../redux/interfaceSlice";
-import LinkBehavior from "../LinkBehavior";
 
 const Navigator = () => {
   const drawerOpen = useAppSelector((state) => state.interface.drawerOpen);
   const drawerWidth = useAppSelector((state) => state.interface.drawerWidth);
   const mobile = useAppSelector((state) => state.interface.mobile);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const theme = useTheme();
 
@@ -47,7 +48,10 @@ const Navigator = () => {
       variant={mobile ? "temporary" : "persistent"}
     >
       <DrawerHeader>
-        <IconButton onClick={() => dispatch(toggleDrawer(null))}>
+        <IconButton
+          aria-label="Close Navigator Tab"
+          onClick={() => dispatch(toggleDrawer(null))}
+        >
           {theme.direction === "ltr" ? (
             <ChevronLeftIcon />
           ) : (
@@ -56,29 +60,38 @@ const Navigator = () => {
         </IconButton>
       </DrawerHeader>
       <Divider />
-      <List>
-        <ListItem button component={LinkBehavior} href="/apps">
+      <List component="nav">
+        <ListItemButton
+          aria-label="Apps Navigator Button"
+          onClick={() => navigate("/apps")}
+        >
           <ListItemIcon>
             <AppsIcon />
           </ListItemIcon>
           <ListItemText primary="Apps" />
-        </ListItem>
-        <ListItem button component={LinkBehavior} href="/privacy">
+        </ListItemButton>
+        <ListItemButton
+          aria-label="Privacy Policy Navigator Button"
+          onClick={() => navigate("/privacy")}
+        >
           <ListItemIcon>
             <PrivacyTipIcon />
           </ListItemIcon>
           <ListItemText primary="Privacy Policy" />
-        </ListItem>
+        </ListItemButton>
         <Divider />
         <Typography sx={{ margin: 2 }} variant="subtitle2">
           Developer
         </Typography>
-        <ListItem button component={LinkBehavior} href="/documentation">
+        <ListItemButton
+          aria-label="API Documentation Navigator Button"
+          onClick={() => navigate("/documentation")}
+        >
           <ListItemIcon>
             <DescriptionIcon />
           </ListItemIcon>
           <ListItemText primary="API Documentation" />
-        </ListItem>
+        </ListItemButton>
       </List>
       <Divider />
       <Typography
@@ -91,7 +104,7 @@ const Navigator = () => {
       >
         Wolkeneis, Copyright © 2022
         <br />
-        Version 0.2.6
+        Version 0.2.7
       </Typography>
     </SwipeableDrawer>
   );

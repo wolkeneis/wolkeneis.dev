@@ -105,6 +105,7 @@ const ProfileSettings = () => {
                 />
                 <CardContent>
                   <List
+                    component="div"
                     subheader={
                       <Typography sx={{ marginX: 2 }} variant="h6">
                         Settings
@@ -114,7 +115,7 @@ const ProfileSettings = () => {
                       width: "100%"
                     }}
                   >
-                    <ListItem>
+                    <ListItem component="div">
                       <ListItemIcon>
                         <LockIcon />
                       </ListItemIcon>
