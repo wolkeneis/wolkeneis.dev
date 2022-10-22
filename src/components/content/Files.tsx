@@ -428,6 +428,9 @@ const Files = () => {
               disableReorder: true,
               flex: 0.25,
               renderCell: (parameters) => {
+                if (!isFileTreeItem(parameters.row)) {
+                  return;
+                }
                 const item: FileTreeItem = parameters.row;
                 return isFile(item) ? (
                   <FileIcon sx={{ color: theme.palette.file.main }} />
@@ -476,6 +479,9 @@ const Files = () => {
               headerName: "Actions",
               flex: 0.5,
               getActions: ({ id, row }) => {
+                if (!isFileTreeItem(row)) {
+                  return [<></>];
+                }
                 const item: FileTreeItem = row;
                 return isFile(item)
                   ? [
@@ -542,6 +548,15 @@ const Files = () => {
         />
       )}
     </Box>
+  );
+};
+
+const isFileTreeItem = (entry?: any): entry is File => {
+  return (
+    !!entry &&
+    (entry as FileTreeItem).id !== undefined &&
+    (entry as FileTreeItem).name !== undefined &&
+    (entry as FileTreeItem).path !== undefined
   );
 };
 
