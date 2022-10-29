@@ -551,7 +551,7 @@ const Files = () => {
   );
 };
 
-const isFileTreeItem = (entry?: any): entry is File => {
+const isFileTreeItem = (entry?: unknown): entry is File => {
   return (
     !!entry &&
     (entry as FileTreeItem).id !== undefined &&
