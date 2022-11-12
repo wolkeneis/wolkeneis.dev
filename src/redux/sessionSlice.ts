@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
-import { type v1 } from "moos-api";
+import { type moos_api_v1 as v1 } from "moos-api";
 
 interface SessionState {
   profile?: v1.UserProfile | null;

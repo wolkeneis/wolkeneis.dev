@@ -1,4 +1,4 @@
-import { type v1 } from "moos-api";
+import { type moos_api_v1 as v1 } from "moos-api";
 import { setCSRFToken } from "../redux/sessionSlice";
 import { store } from "../redux/store";
 
@@ -8,13 +8,13 @@ export async function fetchProfile(): Promise<v1.UserProfile | null> {
       method: "POST"
     }).then((response) =>
       response.json()
-    )) as v1.operations["fetch-profile"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile"]["post"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
 
 export async function patchProfile(
-  body: v1.operations["patch-profile"]["requestBody"]["content"]["application/json"]
+  body: v1.paths["/profile"]["patch"]["requestBody"]["content"]["application/json"]
 ): Promise<boolean> {
   return (
     (await _csrfFetch("/profile", undefined, body, { method: "PATCH" }).then(
@@ -29,7 +29,7 @@ export async function fetchApplications(): Promise<v1.Application[] | null> {
       method: "POST"
     }).then((response) =>
       response.json()
-    )) as v1.operations["post-profile-applications"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile/applications"]["post"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
@@ -40,13 +40,13 @@ export async function fetchFriends(): Promise<v1.Friend[] | null> {
       method: "POST"
     }).then((response) =>
       response.json()
-    )) as v1.operations["post-profile-friends"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile/friends"]["post"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
 
 export async function addFriend(
-  parameters: v1.operations["put-profile-friend"]["parameters"]["path"]
+  parameters: v1.paths["/profile/friend/{friendId}"]["parameters"]["path"]
 ): Promise<boolean> {
   return (
     (await _csrfFetch("/profile/friend/{friendId}", parameters, undefined, {
@@ -56,7 +56,7 @@ export async function addFriend(
 }
 
 export async function removeFriend(
-  parameters: v1.operations["delete-profile-friend"]["parameters"]["path"]
+  parameters: v1.paths["/profile/friend/{friendId}"]["parameters"]["path"]
 ): Promise<boolean> {
   return (
     (await _csrfFetch("/profile/friend/{friendId}", parameters, undefined, {
@@ -66,7 +66,7 @@ export async function removeFriend(
 }
 
 export async function fetchFriendApplications(
-  parameters: v1.operations["post-profile-friend-applications"]["parameters"]["path"]
+  parameters: v1.paths["/profile/friend/{friendId}/applications"]["parameters"]["path"]
 ): Promise<v1.Application[] | null> {
   return (
     ((await _csrfFetch(
@@ -76,13 +76,13 @@ export async function fetchFriendApplications(
       { method: "POST" }
     ).then((response) =>
       response.json()
-    )) as v1.operations["post-profile-friend-applications"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile/friend/{friendId}/applications"]["post"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
 
 export async function fetchFriendFiles(
-  parameters: v1.operations["post-profile-friend-files"]["parameters"]["path"]
+  parameters: v1.paths["/profile/friend/{friendId}/files"]["parameters"]["path"]
 ): Promise<v1.File[] | null> {
   return (
     ((await _csrfFetch(
@@ -92,29 +92,13 @@ export async function fetchFriendFiles(
       { method: "POST" }
     ).then((response) =>
       response.json()
-    )) as v1.operations["post-profile-friend-files"]["responses"]["200"]["content"]["application/json"]) ??
-    null
-  );
-}
-
-export async function fetchFriendCollections(
-  parameters: v1.operations["post-profile-friend-collections"]["parameters"]["path"]
-): Promise<v1.CollectionPreview[] | null> {
-  return (
-    ((await _csrfFetch(
-      "/profile/friend/{friendId}/collections",
-      parameters,
-      undefined,
-      { method: "POST" }
-    ).then((response) =>
-      response.json()
-    )) as v1.operations["post-profile-friend-collections"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile/friend/{friendId}/files"]["post"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
 
 export async function fetchFriendFriends(
-  parameters: v1.operations["post-profile-friend-friends"]["parameters"]["path"]
+  parameters: v1.paths["/profile/friend/{friendId}/friends"]["parameters"]["path"]
 ): Promise<v1.Friend[] | null> {
   return (
     ((await _csrfFetch(
@@ -124,7 +108,7 @@ export async function fetchFriendFriends(
       { method: "POST" }
     ).then((response) =>
       response.json()
-    )) as v1.operations["post-profile-friend-friends"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile/friend/{friendId}/friends"]["post"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
@@ -135,15 +119,15 @@ export async function fetchFiles(): Promise<v1.File[] | null> {
       method: "POST"
     }).then((response) =>
       response.json()
-    )) as v1.operations["post-profile-files"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile/files"]["post"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
 
 export async function fetchFile(
-  body: v1.operations["post-profile-file"]["requestBody"]["content"]["application/json"]
+  body: v1.paths["/profile/file"]["post"]["requestBody"]["content"]["application/json"]
 ): Promise<
-  | v1.operations["post-profile-file"]["responses"]["200"]["content"]["application/json"]
+  | v1.paths["/profile/file"]["post"]["responses"]["200"]["content"]["application/json"]
   | null
 > {
   return (
@@ -151,15 +135,15 @@ export async function fetchFile(
       method: "POST"
     }).then((response) =>
       response.json()
-    )) as v1.operations["post-profile-file"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile/file"]["post"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
 
 export async function createFile(
-  body: v1.operations["put-profile-file"]["requestBody"]["content"]["application/json"]
+  body: v1.paths["/profile/file"]["put"]["requestBody"]["content"]["application/json"]
 ): Promise<
-  | v1.operations["put-profile-file"]["responses"]["200"]["content"]["application/json"]
+  | v1.paths["/profile/file"]["put"]["responses"]["200"]["content"]["application/json"]
   | null
 > {
   return (
@@ -167,13 +151,13 @@ export async function createFile(
       method: "PUT"
     }).then((response) =>
       response.json()
-    )) as v1.operations["put-profile-file"]["responses"]["200"]["content"]["application/json"]) ??
+    )) as v1.paths["/profile/file"]["put"]["responses"]["200"]["content"]["application/json"]) ??
     null
   );
 }
 
 export async function updateFile(
-  body: v1.operations["patch-profile-file"]["requestBody"]["content"]["application/json"]
+  body: v1.paths["/profile/file"]["patch"]["requestBody"]["content"]["application/json"]
 ): Promise<boolean> {
   return (
     (await _csrfFetch("/profile/file", undefined, body, {
@@ -183,7 +167,7 @@ export async function updateFile(
 }
 
 export async function deleteFile(
-  body: v1.operations["delete-profile-file"]["requestBody"]["content"]["application/json"]
+  body: v1.paths["/profile/file"]["delete"]["requestBody"]["content"]["application/json"]
 ): Promise<boolean> {
   return (
     (await _csrfFetch("/profile/file", undefined, body, {
@@ -192,7 +176,7 @@ export async function deleteFile(
   );
 }
 
-export async function fetchCollections(): Promise<
+/*export async function fetchCollections(): Promise<
   v1.CollectionPreview[] | null
 > {
   return (
@@ -390,10 +374,10 @@ export async function deleteSource(
       method: "DELETE"
     }).then((response) => response.ok)) ?? false
   );
-}
+}*/
 
 export async function requestSessionCookie(idToken: string): Promise<boolean> {
-  const body: v1.operations["request-session"]["requestBody"]["content"]["application/json"] =
+  const body: v1.paths["/session"]["post"]["requestBody"]["content"]["application/json"] =
     {
       token: idToken
     };

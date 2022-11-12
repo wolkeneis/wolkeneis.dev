@@ -41,7 +41,7 @@ import {
   GridToolbarDensitySelector,
   GridToolbarExport
 } from "@mui/x-data-grid";
-import { v1 } from "moos-api";
+import { type moos_api_v1 as v1 } from "moos-api";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
