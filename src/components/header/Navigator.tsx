@@ -2,6 +2,7 @@ import AppsIcon from "@mui/icons-material/Apps";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import DescriptionIcon from "@mui/icons-material/Description";
+import PeopleIcon from "@mui/icons-material/People";
 import PrivacyTipIcon from "@mui/icons-material/PrivacyTip";
 import {
   Divider,
@@ -71,6 +72,15 @@ const Navigator = () => {
           <ListItemText primary="Apps" />
         </ListItemButton>
         <ListItemButton
+          aria-label="Friendlist Navigator Button"
+          onClick={() => navigate("/friends")}
+        >
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText primary="Friendlist" />
+        </ListItemButton>
+        <ListItemButton
           aria-label="Privacy Policy Navigator Button"
           onClick={() => navigate("/privacy")}
         >
@@ -104,7 +114,7 @@ const Navigator = () => {
       >
         Wolkeneis, Copyright © 2022
         <br />
-        Version 0.2.7
+        Version 0.2.8
       </Typography>
     </SwipeableDrawer>
   );

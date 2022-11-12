@@ -9,6 +9,8 @@ interface InterfaceState {
   folderDialogVisible: boolean;
   fileDeletionErrorVisible: boolean;
   fileEditErrorVisible: boolean;
+  loginRequiredVisible: boolean;
+  friendErrorVisible: boolean;
 }
 
 const initialState: InterfaceState = {
@@ -19,7 +21,9 @@ const initialState: InterfaceState = {
   uploadDialogVisible: false,
   folderDialogVisible: false,
   fileDeletionErrorVisible: false,
-  fileEditErrorVisible: false
+  fileEditErrorVisible: false,
+  loginRequiredVisible: false,
+  friendErrorVisible: false
 };
 
 export const interfaceSlice: Slice = createSlice({
@@ -76,6 +80,20 @@ export const interfaceSlice: Slice = createSlice({
       action: PayloadAction<boolean>
     ) {
       state.fileEditErrorVisible = action.payload;
+    },
+
+    setLoginRequiredVisible(
+      state: InterfaceState,
+      action: PayloadAction<boolean>
+    ) {
+      state.loginRequiredVisible = action.payload;
+    },
+
+    setFriendErrorVisible(
+      state: InterfaceState,
+      action: PayloadAction<boolean>
+    ) {
+      state.friendErrorVisible = action.payload;
     }
   }
 });
@@ -90,5 +108,7 @@ export const {
   setFileDeletionErrorVisible,
   setFileEditErrorVisible
 } = interfaceSlice.actions;
+export const { setLoginRequiredVisible, setFriendErrorVisible } =
+  interfaceSlice.actions;
 
 export default interfaceSlice.reducer;

@@ -3,12 +3,14 @@ import { type moos_api_v1 as v1 } from "moos-api";
 
 interface SessionState {
   profile?: v1.UserProfile | null;
+  friends?: v1.Friend[] | null;
   files?: v1.File[] | null;
   csrfToken?: string;
 }
 
 const initialState: SessionState = {
   profile: undefined,
+  friends: undefined,
   files: undefined,
   csrfToken: undefined
 };
@@ -22,6 +24,13 @@ export const sessionSlice: Slice = createSlice({
       action: PayloadAction<v1.UserProfile | null>
     ) => {
       state.profile = action.payload;
+    },
+
+    setFriends: (
+      state: SessionState,
+      action: PayloadAction<v1.Friend[] | null>
+    ) => {
+      state.friends = action.payload;
     },
 
     setFiles: (
@@ -40,6 +49,7 @@ export const sessionSlice: Slice = createSlice({
   }
 });
 
-export const { setProfile, setFiles, setCSRFToken } = sessionSlice.actions;
+export const { setProfile, setFriends, setFiles, setCSRFToken } =
+  sessionSlice.actions;
 
 export default sessionSlice.reducer;
