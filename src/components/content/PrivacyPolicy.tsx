@@ -1,6 +1,4 @@
 import { Box, Link, Paper } from "@mui/material";
-import { setAnalyticsCollectionEnabled } from "firebase/analytics";
-import { analytics } from "../../logic/firebase";
 
 const PrivacyPolicy = () => {
   return (
@@ -490,7 +488,7 @@ const PrivacyPolicy = () => {
           unterbinden, indem Sie{" "}
           <Link
             href="#"
-            onClick={() => setAnalyticsCollectionEnabled(analytics, false)}
+            onClick={() => console.log("Welche Analytics?")}
             sx={{ wordBreak: "break-all" }}
             title="Google Analytics Opt-Out-Cookie setzen"
           >

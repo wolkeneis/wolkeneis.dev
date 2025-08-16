@@ -7,7 +7,6 @@ import Content from "./components/content/Content";
 import Endpoints from "./components/Endpoints";
 import LinkBehavior from "./components/LinkBehavior";
 import Redirects from "./components/Redirects";
-import "./logic/firebase";
 import { useAppDispatch, useAppSelector } from "./redux/hooks";
 import { selectTheme, setDrawerOpen, setMobile } from "./redux/interfaceSlice";
 

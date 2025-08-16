@@ -7,8 +7,7 @@ function renderChunks(dependencies: Record<string, string>) {
     [key: string]: unknown;
   } = {};
   Object.keys(dependencies).forEach((key) => {
-    if (["react", "react-dom", "react-router-dom", "firebase"].includes(key))
-      return;
+    if (["react", "react-dom", "react-router-dom"].includes(key)) return;
     chunks[key] = [key];
   });
   return chunks;
@@ -27,7 +26,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ["react", "react-dom", "react-router-dom"],
-          firebase: ["firebase/app", "firebase/analytics", "firebase/auth"],
           ...renderChunks(dependencies)
         }
       }
