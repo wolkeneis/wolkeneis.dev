@@ -1,2 +1,2 @@
-/.well-known/matrix/server
+/.well-known/matrix/*
   Content-Type: application/json
